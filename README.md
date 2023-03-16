@@ -2,7 +2,11 @@
 
 ## MAINTAINED REPO
 
-<strong>At 10 stars I start to update and maintain this repo. Or any similar one if you suggest a better one.</strong>
+<strong>At one of these conditions I will start to update and maintain this repo. Or any similar one if you suggest a better one:</strong>
+
+- 10 Stars
+- 5 Stars & 10 Followers
+
 
 ==========
 
