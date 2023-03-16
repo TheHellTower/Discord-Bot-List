@@ -41,4 +41,4 @@ If you have any issues, check the [FAQs](https://github.com/TheHellTower/Discord
 
 # Credits
 
-@Sank6 for [Discord Bot List](https://github.com/Sank6/Discord-Bot-List)
+[@Sank6](https://github.com/Sank6) for [Discord Bot List](https://github.com/Sank6/Discord-Bot-List)
