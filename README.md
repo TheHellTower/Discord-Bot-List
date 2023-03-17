@@ -12,7 +12,7 @@
 - [x] Update minimum Node.JS Engine version
 - [x] Move from `pug` to `ejs` (pug is not updated anymore)
 - [ ] Remove `klasa` to replace it completely `discord.js` (klasa is outdated and discord.js was only used for embeds.)
-- [ ] Update modules at their last version
+- [x] Update modules at their last version (updated package.json)
 - [ ] Remove all `node-fetch` usages(If actions can be done using built-in Node.JS Engine modules)
 - [ ] Remove useless modules
 
