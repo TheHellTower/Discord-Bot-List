@@ -26,6 +26,7 @@ After everything:
 
 Notes for the end of modifications:
 - Verify all pages to be sure they are all well rendered and code is not badly rewrote
+- Fix all CodeFactor issues
 
 ==========
 
