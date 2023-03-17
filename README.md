@@ -7,6 +7,25 @@
 - 10 Stars
 - 5 Stars & 10 Followers
 
+## ROADMAP FOR FIRST COMMIT(when a condition will be met)
+
+- [x] Update minimum Node.JS Engine version
+- [x] Move from `pug` to `ejs` (pug is not updated anymore)
+- [ ] Remove `klasa` to replace it completely `discord.js` (klasa is outdated and discord.js was only used for embeds.)
+- [ ] Update modules at their last version
+- [ ] Remove all `node-fetch` usages(If actions can be done using built-in Node.JS Engine modules)
+- [ ] Remove useless modules
+
+Optional:
+- [ ] Remove `passport-discord` to make a class for it instead ?(Maybe)
+- [ ] Replace `recaptcha2` by a custom captcha, hcaptcha or another captcha system ?(will probably need a poll)
+- [ ] Move from `config.json` to `.env`
+
+After everything:
+- [ ] Correct some code errors (`admin.ejs`)
+
+Notes for the end of modifications:
+- Verify all pages to be sure they are all well rendered and code is not badly rewrote
 
 ==========
 
