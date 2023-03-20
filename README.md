@@ -17,14 +17,17 @@
 - [ ] Remove useless modules
 
 Optional:
+
 - [ ] Remove `passport-discord` to make a class for it instead ?(Maybe)
 - [ ] Replace `recaptcha2` by a custom captcha, hcaptcha or another captcha system ?(will probably need a poll)
 - [ ] Move from `config.json` to `.env`
 
 After everything:
+
 - [ ] Correct some code errors (`admin.ejs`)
 
 Notes for the end of modifications:
+
 - Verify all pages to be sure they are all well rendered and code is not badly rewrote
 - Fix all CodeFactor issues
 
@@ -38,25 +41,29 @@ The development branch may have newer additions/features, but is also potentiall
 If you have any issues, check the [FAQs](https://github.com/TheHellTower/Discord-Bot-List/wiki/FAQs) first please.
 
 # Screenshots
+
 ![Front Page](/screenshots/front.png?raw=true "Front Page")
 ![Dark Theme](/screenshots/dark.png?raw=true "Dark Theme")
 ![Bot Page](/screenshots/bot.png?raw=true "Bot Page")
 
-
 # Features
- - HTML descriptions
- - Minimalistic website (with dark theme)
- - Bot resubmit option
- - Bot widget
- - Server count API
+
+- HTML descriptions
+- Minimalistic website (with dark theme)
+- Bot resubmit option
+- Bot widget
+- Server count API
 
 # To Do
- - Mark bot as NSFW when submitting
+
+- Mark bot as NSFW when submitting
 
 # Stargazers
+
 [![Stargazers repo roster for @TheHellTower/Discord-Bot-List](https://reporoster.com/stars/dark/notext/TheHellTower/Discord-Bot-List)](https://github.com/TheHellTower/Discord-Bot-List/stargazers)
 
 # Forkers
+
 [![Forkers repo roster for @TheHellTower/Discord-Bot-List](https://reporoster.com/forks/dark/notext/TheHellTower/Discord-Bot-List)](https://github.com/TheHellTower/Discord-Bot-List/network/members)
 
 # Credits
