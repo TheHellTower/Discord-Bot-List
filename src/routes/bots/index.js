@@ -1,4 +1,4 @@
-const url = require('is-url');
+const { isURL } = require('@utils/isSomething');
 const { Router } = require("express");
 
 const resubmit = require("@routes/bots/resubmit");
@@ -25,11 +25,15 @@ route.get('/:id', async (req, res) => {
     
     if (!bot) return res.render("404", {req});
 
-    const botUser = await req.app.get('client').users.fetch(req.params.id);
+    let error = false;
+    const botUser = await req.app.get('client').guilds.cache.get(globalThis.config.server.id).members.fetch(bot.botid).catch(() => {
+        error = true
+    });
 
+    if(error) return res.render("404", {req})
     // Update user properties
-    if (bot.logo !== botUser.displayAvatarURL({format: "png", size: 256})) 
-        await Bots.updateOne({ botid: req.params.id }, {$set: {logo: botUser.displayAvatarURL({format: "png", size: 256})}});
+    if (bot.logo !== `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.user.avatar}.png`) 
+        await Bots.updateOne({ botid: req.params.id }, {$set: {logo: `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.user.avatar}.png` }});
 
     if (bot.username !== botUser.username)
         await Bots.updateOne({ botid: req.params.id }, {$set: {username: botUser.username}});
@@ -51,7 +55,7 @@ route.get('/:id', async (req, res) => {
         owners = [{tag: "Unknown User"}]
     }
     let b = "#8c8c8c";
-    let c = botUser.presence.status
+    let c = botUser.presence?.status
     switch (c) {
         case "online":
             b = "#32ff00"
@@ -62,11 +66,15 @@ route.get('/:id', async (req, res) => {
         case "dnd":
             b = "#ff0000";
             break;
+        default:
+            b = req.cookies["theme"] == "light" ? "F7F4EA" : "404E5C";
+            break;
     }
     var desc = ``;
-    let isUrl = url(bot.long.replace("\n", "").replace(" ", ""))
+    let possibleURL = bot.long.replaceAll("\n", "").replaceAll(" ", "");
+    let isUrl = isURL(possibleURL)
     if (isUrl) {
-        desc = `<iframe src="${bot.long.replace("\n", "").replace(" ", "")}" width="600" height="400" id="url-embed"><object data="${bot.long.replace("\n", "").replace(" ", "")}" width="600" height="400" style="width: 100%; height: 100vh;"><embed src="${bot.long.replace("\n", "").replace(" ", "")}" width="600" height="400" style="width: 100%; height: 100vh;"> </embed>${bot.long.replace("\n", "").replace(" ", "")}</object></iframe>`
+        desc = `<iframe src="${possibleURL}" width="600" height="400" id="url-embed"><object data="${possibleURL}" width="600" height="400" style="width: 100%; height: 100vh;"><embed src="${possibleURL}" width="600" height="400" style="width: 100%; height: 100vh;"> </embed>${possibleURL}</object></iframe>`
     } else if (bot.long) desc = bot.long;
     else desc = bot.description;
 
@@ -76,14 +84,15 @@ route.get('/:id', async (req, res) => {
     else servers = null;
 
     let activity = ``;
-    if (botUser.presence.activities.length) {
-        activity += botUser.presence.activities[0].type.toLowerCase().capitalize()
-        activity += " "
-        activity += botUser.presence.activities[0].name
+    if (botUser.presence?.activities?.length > 0) {
+        //console.log(`${Object.keys(botUser.presence.activities)} | ${Object.values(botUser.presence.activities)}`)
+        /*activity += `${botUser.presence?.activities[0].type.toLowerCase().capitalize()} ${botUser.presence?.activities[0].name}`*/
+        activity += botUser.presence.activities[0];
     }
 
-    let discord_verified = (await botUser.fetchFlags()).has("VERIFIED_BOT")
-
+    //console.log(botUser.user.flags.toArray());
+    let discord_verified = botUser.user.flags.toArray().includes("VerifiedBot"); //VerifiedBot,BotHTTPInteractions
+    
     res.render("bots", {
         bot,
         botUser,

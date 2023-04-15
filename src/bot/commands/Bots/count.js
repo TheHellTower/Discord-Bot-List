@@ -1,15 +1,12 @@
-const { Command } = require('klasa');
-const Bots = require("@models/bots");
+const Command = globalThis.TheHellTower.client.structures.command,
+    Bots = require("@models/bots");
 
 module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             name: 'count',
-            runIn: ['text'],
+            category: "Bots",
             aliases: ["list", "botcount", "bot-count"],
-            permLevel: 0,
-            botPerms: ["SEND_MESSAGES"],
-            requiredSettings: [],
             description: "Check how many bots there are in the list."
         });
     }
@@ -17,7 +14,7 @@ module.exports = class extends Command {
     async run(message) {
         let bots = await Bots.find({}, { _id: false })
         bots = bots.filter(bot => bot.state !== "deleted");
-        if (bots.length === 1) message.channel.send(`There is \`1\` bot in the list.`)
-        else message.channel.send(`There are \`${bots.length}\` bots in the list.`)
+        if (bots.length === 1) message.reply({content: "There is `1` bot in the list."})
+        else message.reply({content: `There are \`${bots.length}\` bots in the list.`})
     }
 };

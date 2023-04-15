@@ -1,0 +1,19 @@
+<br />
+<span class="center">
+    <a href='/join'>Join Server</a>
+    |  
+    <a href='/add'>Add a bot</a>
+    |  
+    <a href='/api/theme'>Toggle theme</a>
+    <% if(req.user !== undefined) { %>
+        <% if (req.user.staff) { %>
+            |
+            <a href="/admin">Dashboard</a>
+        <% } %>
+    |  
+    <a href='/logout'>Logout</a>
+    <% } %>
+    |  
+    <a href='/about'>About</a>
+</span>
+<br />

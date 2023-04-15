@@ -1,8 +1,8 @@
-const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
-const Bots = require("@models/bots");
-
-const { server: {mod_log_id, role_ids} } = require("@root/config.json");
+const Command = globalThis.TheHellTower.client.structures.command,
+    { EmbedBuilder } = require('discord.js'),
+    Bots = require("@models/bots"),
+    
+    { server: {mod_log_id, role_ids} } = require("@root/config.json");
 
 const reasons = {
     "1": `Your bot was offline when we tried to verify it.`,
@@ -18,21 +18,37 @@ module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
             name: 'remove',
-            runIn: ['text'],
+            category: "Bots",
             aliases: ["delete"],
-            permissionLevel: 8,
-            botPerms: ["SEND_MESSAGES"],
             description: "Remove a bot from the botlist",
             usage: '[Member:user]'
         });
     }
 
-    async run(message, [Member]) {
-        if (!Member || !Member.bot) return message.channel.send(`You didn't ping a bot to remove.`)
-        let e = new MessageEmbed()
+    async run(message, args) {
+        let user =
+      message.mentions.users.size > 0
+        ? message.guild.members.cache.get(message.mentions.users?.first().id)
+        : args[0]
+        ? await this.client.users.fetch(args[0])
+        : message.guild.members.cache.get(message.author.id);
+        user = user?.user ? user.user : user;
+
+        if (!user || !user.bot) return message.channel.send(`You didn't ping a bot to remove.`)
+
+        this.init();
+        
+        let bot = await Bots.findOne({ botid: user.id }, { _id: false });
+        let owners = [bot.owners.primary].concat(bot.owners.additional)
+        if(!owners.includes(message.author.id) && !message.member.roles.cache.has(globalThis.config.server.role_ids.bot_verifier)) return message.reply("Only DBL admin(s) or the respective bot owner(s) are allowed to remove this bot.");
+        await Bots.updateOne({ botid: user.id }, { $set: { state: "deleted", owners: {primary: bot.owners.primary, additional: []} } });
+        const botUser = await this.client.users.fetch(user.id);
+        if (!bot) return message.channel.send(`Unknown Error. Bot not found.`)
+
+        let e = new EmbedBuilder()
             .setTitle('Reasons')
             .setColor(0x6b83aa)
-            .addField(`Removing bot`, `${Member}`)
+            .addFields({name: `Removing bot`, value: `${user}`})
         let cont = ``;
         for (let k in reasons) {
             let r = reasons[k];
@@ -40,41 +56,50 @@ module.exports = class extends Command {
         }
         cont += `\nEnter a valid reason number or your own reason.`
         e.setDescription(cont)
-        message.channel.send(e);
-        let filter = m => m.author.id === message.author.id;
+        message.reply({embeds: [e]}).then(async (m) => {
+            const mainAnswer = await m.channel
+            .awaitMessages({
+            filter: (m) => m.author.id === message.author.id,
+            time: 20000,
+            max: 1,
+          })
+          .catch((e) => {
+            message.reply({
+              content: "You ran out of time or an error happened !",
+            });
+          });
+          
+          if (mainAnswer.size) {
+            var answerMessage = mainAnswer.first();
+            answerMessage.delete();
+            let r = answerMessage.content;
+            if (parseInt(r)) {
+                r = reasons[r]
+                if (!r) return message.channel.send("Invalid reason number.")
+            }
 
-        let collected = await message.channel.awaitMessages(filter, { max: 1, time: 20000, errors: ['time'] });
-        let reason = collected.first().content
-        let r = collected.first().content;
-        if (parseInt(reason)) {
-            r = reasons[reason]
-            if (!r) return message.channel.send("Inavlid reason number.")
-        }
-
-        let bot = await Bots.findOne({ botid: Member.id }, { _id: false });
-        await Bots.updateOne({ botid: Member.id }, { $set: { state: "deleted", owners: {primary: bot.owners.primary, additional: []} } });
-        const botUser = await this.client.users.fetch(Member.id);
-
-        if (!bot) return message.channel.send(`Unknown Error. Bot not found.`)
-        let owners = [bot.owners.primary].concat(bot.owners.additional)
-        e = new MessageEmbed()
+            e = new EmbedBuilder()
             .setTitle('Bot Removed')
-            .addField(`Bot`, `<@${bot.botid}>`, true)
-            .addField(`Owner`, owners.map(x => x ? `<@${x}>` : ""), true)
-            .addField("Mod", message.author, true)
-            .addField("Reason", r)
+            .addFields(
+                { name: "Bot", value: `<@${bot.botid}>`, inline: true },
+                { name: "Owner(s)", value: `${owners.map(x => x ? `<@${x}>` : "")}`, inline: true },
+                { name: "Mod", value: `<@${message.author.id}>`, inline: true },
+                { name: "Reason", value: `${r}`, inline: true },
+            )
             .setThumbnail(botUser.displayAvatarURL({format: "png", size: 256}))
             .setTimestamp()
             .setColor(0xffaa00)
-        modLog.send(e)
-        modLog.send(owners.map(x => x ? `<@${x}>` : "")).then(m => { m.delete() });
-        message.channel.send(`Removed <@${bot.botid}> Check <#${mod_log_id}>.`)
-        
-        owners = await message.guild.members.fetch({user: owners})
-        owners.forEach(o => {
-            o.send(`Your bot ${bot.username} has been removed:\n>>> ${r}`)
-        })
-        if (!message.client.users.cache.find(u => u.id === bot.botid).bot) return;
+            modLog.send({embeds:[e]});
+
+            let msg = await modLog.send(`${owners.map(x => x ? `<@${x}>` : "")}`);
+            msg.delete();
+
+            owners = await message.guild.members.fetch({user: owners})
+            owners.forEach(o => {
+                o.send(`Your bot ${bot.username} has been removed:\n>>> ${r}`).catch(() => {});
+            });
+
+            if (!message.client.users.cache.find(u => u.id === bot.botid).bot) return;
         try {
             message.guild.members.fetch(message.client.users.cache.find(u => u.id === bot.botid))
                 .then(bot => {
@@ -82,6 +107,10 @@ module.exports = class extends Command {
                         .catch(e => { console.log(e) })
                 }).catch(e => { console.log(e) });
         } catch (e) { console.log(e) }
+        
+        return m.edit({content: `Removed <@${bot.botid}> Check <#${mod_log_id}>.`, embeds: []});
+          }
+        });
     }
 
     async init() {

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("./includes/head.ejs") %>
+    <script src="/assets/js/admin.js"></script>
+    <link rel="stylesheet" href="/assets/css/table.css">
+  </head>
+  <body>
+    <%- include("./includes/nav.ejs") %>
+    <div id="content">
+      <span class="header">
+        <h1>Admin Area</h1>
+      </span>
+      <div id="bots-list">
+        <br>
+        <h5>Awaiting Approval</h5>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Prefix</th>
+              <th scope="col">View</th>
+              <th scope="col">Manage</th>
+            </tr>
+          </thead>
+          <tbody class="bots-list-body">
+            <% if (bots) { %>
+              <% bots.forEach(function(val) { %>
+                <tr>
+                  <td>
+                    <img class="rounded-circle" src="<%= val.logo %>" alt="">
+                    <%= val.username %>
+                  </td>
+                  <td><%= val.prefix %></td>
+                  <td>
+                    <a class="btn btn-primary pad-right" target="__blank" href="https://discord.com/oauth2/authorize?client_id=<%= val.botid %>&scope=bot&guild_id=<%= id %>&permissions=0">Invite</a>
+                    <a class="btn btn-primary pad-right" target="__blank" href="/bots/<%= val.botid %>">View</a>
+                    <a class="btn btn-primary" target="__blank" href="/bots/edit/<%= val.botid %>">Edit</a>
+                  </td>
+                  <td>
+                    <a class="btn btn-secondary pad-right" onclick="note('<%= val.note %>', '<%= val.username %>')">View Note</a>
+                    <a class="btn btn-success pad-right" onclick="approve('<%= val.botid %>', '<%= val.username %>')">Approve</a>
+                    <a class="btn btn-danger" onclick="deny('<%= val.botid %>', '<%= val.username %>')">Deny</a>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+      <%- include('./includes/footer.ejs'); %>
+    </div>
+  </body>
+</html>

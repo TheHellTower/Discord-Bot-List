@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("./includes/head.ejs") -%>
+  </head>
+  <body>
+    <%- include("./includes/nav.ejs") -%>
+    <div id="content">
+      <span class="header">
+        <h1 class="capitalise"><%= req.params.tag %></h1>
+      </span>
+      <br />
+      <div id="cards">
+        <% if (cards) { %>
+        <% cards.forEach(function(val, i) { %>
+        <div class="card">
+          <% if (val.nsfw) { %>
+          <img class="icon nsfw" src="<%= val.logo %>" />
+          <% } else { %>
+          <img class="icon" src="<%= val.logo %>" />
+          <% } %>
+          <h2 class="title"><%= val.username %></h2>
+          <a class="likes" href="/bots/like/<%= val.botid %>">
+            <i class="far fa-heart"></i>
+            <%= val.likes || 0 %>
+          </a>
+          <p class="desc"><%= val.description %></p>
+          <a class="small button" href="/bots/<%= val.botid %>">View Bot</a>
+        </div>
+        <% }); %>
+        <% } else { %>
+        <span class="center">
+          <p>No Bots found</p>
+        </span>
+        <% } %>
+      </div>
+      <br />
+      <%- include('./includes/footer.ejs'); %>
+    </div>
+  </body>
+</html>

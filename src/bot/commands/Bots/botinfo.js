@@ -1,41 +1,54 @@
-const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
-const Bots = require("@models/bots");
-
+const Command = globalThis.TheHellTower.client.structures.command,
+    { EmbedBuilder } = require('discord.js'),
+    Bots = require("@models/bots");
 
 module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
+            name: "botinfo",
+            category: "Bots",
             aliases: ["bot-info", "info"],
+            description: "Check a bot info.",
             usage: '[User:user]'
         });
     }
 
-    async run(message, [user]) {
-        if (!user || !user.bot) return message.channel.send(`Ping a **bot** to get info about.`);
-        if (user.id === message.client.user.id) return message.channel.send(`-_- No`);
+    async run(message, args) {
+        let user =
+      message.mentions.users.size > 0
+        ? message.guild.members.cache.get(message.mentions.users?.first().id)
+        : args[0]
+        ? await this.client.users.fetch(args[0])
+        : message.guild.members.cache.get(message.author.id);
+        user = user?.user ? user.user : user;
+        
+        if (!user || !user.bot) return message.reply({content: "Ping a **bot** to get info about."});
+        if (user.id === message.client.user.id) return message.channel.send(`-_- NoZ`);
 
         const bot = await Bots.findOne({ botid: user.id }, { _id: false })
-        if (!bot) return message.channel.send(`Bot not found.`);
+        let owners = [bot.owners.primary].concat(bot.owners.additional)
+        if (!bot) return message.reply({content: "Bot not found."});
         let servers;
         if (bot.servers[bot.servers.length - 1])
             servers = bot.servers[bot.servers.length - 1].count;
         else servers = null;
         const botUser = await this.client.users.fetch(user.id);
-        if (bot.logo !== botUser.displayAvatarURL({format: "png", size: 256}))
-            await Bots.updateOne({ botid: user.id }, {$set: {logo: botUser.displayAvatarURL({format: "png", size: 256})}});
-        let e = new MessageEmbed()
+        if (bot.logo !== `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.avatar}.png`)
+            await Bots.updateOne({ botid: user.id }, {$set: {logo: `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.avatar}.png` }});
+        let e = new EmbedBuilder()
             e.setColor(0x6b83aa)
-            e.setAuthor(bot.username, botUser.displayAvatarURL({format: "png", size: 256}), bot.invite)
+            e.setAuthor({ name: bot.username, iconURL: botUser.displayAvatarURL({ dynamic: true })});
             e.setDescription(bot.description)
-            e.addField(`Prefix`, bot.prefix ? bot.prefix : "Unknown", true)
-            e.addField(`Support Server`, !bot.support ? "Not Added" : `[Click Here](${bot.support})`, true)
-            e.addField(`Website`, !bot.website ? "Not Added" : `[Click Here](${bot.website})`, true)
-            e.addField(`Github`, !bot.github ? "Not Added" : `[Click Here](${bot.github})`, true)
-            e.addField(`Likes`, `${bot.likes || 0} Likes`, true)
-            e.addField(`Server Count`, `${servers || 0} Servers`, true)
-            e.addField(`Owner`, `<@${bot.owners.primary}>`, true)
-            e.addField(`State`, bot.state, true)
-        message.channel.send(e);
+            e.addFields(
+                { name: "Prefix", value: `${bot.prefix}`, inline: true },
+                { name: "Support Server", value: `[Click Here](${bot.support})`, inline: true },
+                { name: "Website", value: `[Click Here](${bot.website})`, inline: true },
+                { name: "GitHub", value: `[Click Here](${bot.github})`, inline: true },
+                { name: "Likes", value: `${bot.likes} Likes`, inline: true },
+                { name: "Server Count", value: `${servers || 0} Servers`, inline: true },
+                { name: "Owner(s)", value: `${owners.map(x => x ? `<@${x}>` : "")}`, inline: true },
+                { name: "State", value: `${bot.state}`, inline: true },
+            )
+        return message.reply({embeds: [e]});
     }
 };

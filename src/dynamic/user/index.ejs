@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+    <%- include("../includes/head.ejs") -%>
+</head>
+<body>
+    <%- include("../includes/nav.ejs") -%>
+  <div id="content">
+    <span class="header">
+        <img class="icon" src="<%= userProfile.displayAvatarURL() %>" width="100px">
+        <h1><%= userProfile.username %></h1>
+        <div class="badge-holder">
+            <% if (admin) { %>
+                <span class="badge">
+                    <img src="/assets/img/admin.png" title="Admin">
+                    Admin
+                </span>
+            <% } %>
+            <% if (moderator) { %>
+                <span class="badge">
+                    <img src="/assets/img/moderator.png" title="Moderator">
+                    Moderator
+                </span>
+            <% } %>
+        </div>
+    </span>
+    <div id="cards">
+        <% cards.forEach((val, i) => { %>
+            <% if(val.state == "verified") { %>
+                <div class="card">
+                    <% if (val.nsfw) { %>
+                        <img class="icon nsfw" src="<%= val.logo %>">
+                    <% } else { %>
+                        <img class="icon" src="<%= val.logo %>">
+                    <% } %>
+                    <h2 class="title"><%= val.username %></h2>
+                    <a class="likes" href="/bots/like/<%= val.botid %>">
+                        <i class="far fa-heart"></i>
+                        <%= val.likes || 0 %>
+                    </a>
+                    <p class="desc"><%= val.description %></p>
+                    <a class="small button" href="/bots/<%= val.botid %>">View Bot</a>
+                </div>
+            <% } %>
+        <% }) %>
+    </div>
+  </div>
+</body>

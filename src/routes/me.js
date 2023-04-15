@@ -8,7 +8,7 @@ const route = Router();
 
 route.get("/", auth, async (req, res) => {
     let user = await req.app.get("client").users.fetch(req.user.id);
-    if (!user) return res.render("user/notfound", {user: req.user});
+    if (!user) return res.render("user/notfound", {user: req.user, req});
 
     
     let bots = await Bots.find({}, { _id: false })

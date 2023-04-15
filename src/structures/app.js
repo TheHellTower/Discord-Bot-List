@@ -14,11 +14,11 @@ class App {
   constructor(client, locals = {}) {
     this.express = express();
     this.express.set("views", "src/dynamic");
-    this.express.set("view engine", "pug");
+    this.express.set("view engine", "ejs");
     this.express.set("client", client);
     this.express.locals = locals;
 
-    / * Middleware Functions */;
+    /* Middleware Functions */;
     this.express.use(cookieParser());
     this.express.use(express.static(__dirname + "/../public"));
     this.express.use(

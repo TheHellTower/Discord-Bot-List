@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const https = require('https');
 
 const { server: { role_ids: { bot_verifier } }, server: { admin_user_ids, id } } = require("@root/config.json")
 
@@ -19,13 +19,35 @@ module.exports.auth = async(req, res, next) => {
 module.exports.getUser = async (user) => {
     let { accessToken } = user;
 
-    user = await fetch(`https://discord.com/api/users/@me`, {
+    const options = {
+        method: 'GET',
         headers: {
-            Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${accessToken}`
         }
+    };
+
+    const req = https.request('https://discord.com/api/users/@me', options, (res) => {
+        console.log(`statusCode: ${res.statusCode}`);
+        let data = '';
+
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        res.on('end', async () => {
+            user = JSON.parse(data);
+            user = await user.json();
+            
+            if (user.code === 0) return false;
+            return user;
+        });
     });
 
-    user = await user.json();
+    req.on('error', (error) => {
+        console.error(error);
+    });
+
+    req.end();      
 
     if (user.code === 0) return false;
     return user;

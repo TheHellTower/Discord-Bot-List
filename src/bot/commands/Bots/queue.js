@@ -1,14 +1,17 @@
-const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
-const Bots = require("@models/bots");
-
-const { server: {id} } = require("@root/config.json");
+const Command = globalThis.TheHellTower.client.structures.command,
+    { EmbedBuilder } = require('discord.js'),
+    Bots = require("@models/bots"),
+    
+    { server: {id} } = require("@root/config.json");
 
 module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
+            name: "queue",
+            category: "Bots",
             aliases: ["q"],
-            permissionLevel: 8,
+            description: "Check how many bots are in queue",
+            usage: ""
         });
     }
 
@@ -16,13 +19,14 @@ module.exports = class extends Command {
         let cont = "";
         let bots = await Bots.find({ state: "unverified" }, { _id: false })
 
+        //No handling for a huge amount of bot ? Mmmmh...
         bots.forEach(bot => { cont += `<@${bot.botid}> : [Invite](https://discord.com/oauth2/authorize?client_id=${bot.botid}&scope=bot&guild_id=${id}&permissions=0)\n` })
         if (bots.length === 0) cont = "Queue is empty";
 
-        let embed = new MessageEmbed()
+        let embed = new EmbedBuilder()
             .setTitle('Queue')
             .setColor(0x6b83aa)
             .setDescription(cont)
-        message.channel.send(embed)
+        return message.reply({embeds: [embed]});
     }
 };

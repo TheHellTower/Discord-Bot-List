@@ -1,5 +1,5 @@
 const recaptcha2 = require('recaptcha2')
-const is = require('is-html');
+const { isHTML } = require('@utils/isSomething');
 
 const { server: { id }, bot_options: {
     max_owners_count,
@@ -44,9 +44,9 @@ module.exports = async (req, b = null) => {
     if (String(data.note).length > max_summary_length) return { success: false, message: "Your note is too long." };
 
     // Check if summary or note has HTML.
-    if (is(data.description))
+    if (isHTML(data.description))
         return { success: false, message: "HTML is not supported in your bot summary" }
-    if (is(data.note))
+    if (isHTML(`${data.note || "No Note"}`))
         return { success: false, message: "HTML is not supported in your note" }
 
     // Check that the bot's HTML description isn't too long

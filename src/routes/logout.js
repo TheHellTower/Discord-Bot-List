@@ -3,7 +3,9 @@ const { Router } = require("express");
 const route = Router();
 
 route.get("/", async (req, res) => {
-  req.logout();
+  req.logout(function(err) {
+    if (err) console.log(`\n==========LOGOUT==========\n${err.toString()}\n==========LOGOUT==========\n`)
+  });
   res.redirect(`/`);
 });
 

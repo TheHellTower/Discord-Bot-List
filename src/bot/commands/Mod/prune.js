@@ -1,46 +1,55 @@
-const { Command } = require('klasa');
+const { PermissionFlagsBits } = require("discord.js");
+
+const Command = globalThis.TheHellTower.client.structures.command;
 
 module.exports = class extends Command {
 
     constructor(...args) {
         super(...args, {
-            permissionLevel: 6,
-            requiredPermissions: ['MANAGE_MESSAGES'],
-            runIn: ['text'],
-            description: 'Prunes a certain amount of messages w/o filter.',
+            name: "prune",
+            category: "Mod",
+            aliases: ["clear", "clean"],
+            description: 'Prunes/Clear a certain amount of messages w/o filter.',
             usage: '[limit:integer] [link|invite|bots|you|me|upload|user:user]',
             usageDelim: ' '
         });
     }
 
-    async run(msg, [limit = 50, filter = null]) {
-        let messages = await msg.channel.messages.fetch({ limit: 100 });
+    async run(message, args) {
+        if(!message.member.permissions.has(PermissionFlagsBits.ManageMessages)) return message.reply({content: "You don't have the required permission (`Manage Messages`)."});
+        var limit = args[0];
+        if(!limit) return message.reply({content: "You need to specify a number of messages !"});
+        var filter = args[1];
+        if(!filter) return message.reply({content: "You need to specify a filer: `[link|invite|bots|you|me|upload|user:user]` !"});
+        let messages = await message.channel.messages.fetch({ limit: limit == 1 ? 2 : limit, cache: false });
         if (filter) {
             const user = typeof filter !== 'string' ? filter : null;
             const type = typeof filter === 'string' ? filter : 'user';
-            messages = messages.filter(this.getFilter(msg, type, user));
+            messages = messages.filter(this.getFilter(message, type, user));
         }
-        messages = messages.array().slice(0, limit);
-        await msg.channel.bulkDelete(messages);
-        return msg.sendMessage(`Successfully deleted ${messages.length} messages from ${limit}.`);
+        messages = Array.from(messages.values());
+        message.reply({content: `Successfully deleted \`${messages.length}\` messages from \`${limit}\`.`}).then(async () => {
+            await message.channel.bulkDelete(messages);
+        });
+        return 
     }
 
-    getFilter(msg, filter, user) {
+    getFilter(message, filter, user) {
         switch (filter) {
             case 'link':
-                return mes => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
+                return msg => /https?:\/\/[^ /.]+\.[^ /.]+/.test(msg.content);
             case 'invite':
-                return mes => /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discord\.com\/invite)\/.+/.test(mes.content);
+                return msg => /(https?:\/\/)?(www\.)?(discord\.(gg|li|me|io)|discord\.com\/invite)\/.+/.test(msg.content);
             case 'bots':
-                return mes => mes.author.bot;
+                return msg => msg.author.bot;
             case 'you':
-                return mes => mes.author.id === this.client.user.id;
+                return msg => msg.author.id === this.client.user.id;
             case 'me':
-                return mes => mes.author.id === msg.author.id;
+                return msg => msg.author.id === message.author.id;
             case 'upload':
-                return mes => mes.attachments.size > 0;
+                return msg => msg.attachments.size > 0;
             case 'user':
-                return mes => mes.author.id === user.id;
+                return msg => msg.author.id === user.id;
             default:
                 return () => true;
         }

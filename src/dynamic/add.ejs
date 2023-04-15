@@ -1,0 +1,65 @@
+<!doctype html>
+<head>
+  <%- include("./includes/head.ejs") %>
+  <script src="/assets/js/form.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+  <%- include("./includes/nav.ejs") %>
+  <div id="content">
+    <span class="header">
+      <h1>Add your bot</h1>
+      <p>Fill in these details and hit that button. Make sure you're in the server.</p>
+    </span>
+    <br>
+    <form class="center">
+      <div class="input-holder">
+        <input id="botid" class="input" type="text" placeholder=" ">
+        <div class="placeholder">Client ID</div>
+      </div>
+      <br>
+      <div class="input-holder">
+        <input id="prefix" class="input" type="text" placeholder=" ">
+        <div class="placeholder">Prefix</div>
+      </div>
+      <br>
+      <div class="input-holder">
+        <select class="selectbox-submit" id="marknsfw">
+          <option value="true">Yes</option>
+          <option value="false" selected>No</option>
+        </select>
+        <div class="textarea-placeholder">NSFW</div>
+      </div>
+      <br>
+      <br>
+      <div class="input-holder">
+        <input id="description" class="input" maxlength="<%= max_summary_length %>" type="text" placeholder=" ">
+        <div class="placeholder">Summary</div>
+      </div>
+      <br>
+      <div class="input-holder">
+        <textarea id="longdesc" class="input" rows="7"></textarea>
+        <div class="textarea-placeholder">Description</div>
+      </div>
+      <br>
+      <div class="input-holder">
+        <input id="note" class="input" maxlength="<%= max_summary_length %>" type="text" placeholder=" ">
+        <div class="placeholder">Note to admin</div>
+      </div>
+      <br>
+      <div class="input-holder">
+        <input id="ownerids" class="input" type="text" placeholder=" ">
+        <div class="placeholder">Additional Owner IDs</div>
+      </div>
+      <br>
+      <div class="center-inline">
+        <div class="g-recaptcha" data-callback="update_token" data-sitekey="<%= site_key %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
+      </div>
+      <a class="button" onclick="submit()">Submit</a>
+      <br>
+    </form>
+    <br>
+    <%- include('./includes/footer.ejs'); %>
+  </div>
+</body>

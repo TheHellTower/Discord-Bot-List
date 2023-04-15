@@ -15,8 +15,9 @@ route.get("/:id", async (req, res) => {
     let owner = await req.app.get("client").guilds.cache.get(id).members.fetch(bot.owners.primary);
     let avatar = await resolveImage(bot.logo);
     let verified = await resolveImage(path.join(__dirname, "./verified_badge.png"));
+    let botUser = await req.app.get('client').guilds.cache.get(globalThis.config.server.id).members.fetch(req.params.id)
 
-    let discord_verified = (await (await req.app.get('client').users.fetch(req.params.id)).fetchFlags()).has("VERIFIED_BOT");
+    let discord_verified = botUser.user.flags.toArray().includes("VerifiedBot") //VerifiedBot,BotHTTPInteractions
 
     let img = new Canvas(500, 250)
       .setColor("#404E5C")

@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const fetch = require("node-fetch");
+const https = require('https');
 const { auth } = require("@utils/discordApi");
 const Bots = require("@models/bots");
 const Users = require("@models/users");
@@ -22,12 +22,40 @@ route.patch("/:id", auth, async (req, res) => {
   let channel = await req.app.get('client').channels.cache.get(server.like_log);
   let webhook = (await channel.fetchWebhooks()).first();
   if (!webhook) 
-    webhook = await channel.createWebhook('Discord Bot List')
-  await webhook.send(`<@${req.user.id}> (${userProfile.tag}) liked <@${req.params.id}>`);
+    webhook = await channel.createWebhook({name: 'DBL'})
+  await webhook.send({content: `<@${req.user.id}> (${userProfile.tag}) liked <@${req.params.id}>`});
 
   // Custom webhook
   if (bot.webhook) {
-    fetch(bot.webhook, {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+    const req = https.request(bot.webhook, options, (res) => {
+      console.log(`statusCode: ${res.statusCode}`);
+    
+      res.on('data', (d) => {
+        process.stdout.write(d);
+      });
+    });
+
+    req.on('error', (error) => {
+      console.error(error);
+    });
+    
+    const postData = JSON.stringify({
+      type: "like",
+      bot: req.params.id,
+      user: req.user.id,
+      timestamp: new Date()
+    });
+    
+    req.write(postData);
+    req.end();
+    
+    /*fetch(bot.webhook, { //node-fetch
       method: "POST",
       body: JSON.stringify({
         type: "like",
@@ -36,7 +64,7 @@ route.patch("/:id", auth, async (req, res) => {
         timestamp: new Date()
       }),
       headers: { 'Content-Type': 'application/json' }
-    })
+    })*/
   }
 
   return res.json({ success: true })

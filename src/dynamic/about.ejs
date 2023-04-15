@@ -1,0 +1,20 @@
+<!doctype html>
+<head>
+  <%- include("./includes/head.ejs") %>
+</head>
+<body>
+  <%- include("./includes/nav.ejs") %>
+  <div id="content">
+    <h1>About</h1>
+    <p class="smallwidth">
+      This is an <a href="https://github.com/TheHellTower/Discord-Bot-List">open-sourced Discord Bot List</a>, written in NodeJS, with an <a href="https://expressjs.com/">Express JS</a> web server and a <a href="https://discord.js.org/#/">discord.js</a> bot. The bots are stored in a MongoDB database, but no user data is stored or saved. Cookies are used to store Discord's OAuth data. If you find any issues or bugs, or have a suggestion, feel free to <a href="https://github.com/TheHellTower/Discord-Bot-List/issues">open an issue</a>.<br><br>If you are interested you can <a href="https://github.com/users/TheHellTower/projects/1/views/1">see the roadmap</a>.
+      <br><br>
+      Some of the icons used in this website are from <a href="https://fontawesome.com/">FontAwesome</a>.
+      <!--<br><br>
+      If you want to keep the live version online(since the server behind is not free) and motivate me to improve it better and faster you can sponsor the project through the GitHub repository linked above. (<a href="https://i.imgur.com/PWc2tBk.png">see the screenshot</a>) -->
+    </p>
+    <br>
+    <a id="back" class="button" href="javascript:history.back()">Back</a>
+    <%- include('./includes/footer.ejs'); %>
+  </div>
+</body>

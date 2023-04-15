@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("./includes/head.ejs") -%>
+    <script src="/assets/js/like.js"></script>
+  </head>
+  <body>
+    <%- include("./includes/nav.ejs") -%>
+    <div id="content">
+      <div id="cards">
+        <div class="like card">
+          <% if (bot.nsfw) { %>
+            <img class="icon nsfw" src=<%= val.logo %> />
+          <% } else { %>
+            <img class="icon" src=<%= bot.logo %> />
+          <% } %>
+          <h2 class="title"><%= bot.username %></h2>
+          <p>You can like every 12 hours</p>
+          <a class="small button" id="like">Like</a>
+          <p id="likes" style="display: none;"><%= `${bot.likes || 0} Likes` %></p>
+        </div>
+      </div>
+      <%- include('./includes/footer.ejs'); %>
+    </div>
+  </body>
+</html>

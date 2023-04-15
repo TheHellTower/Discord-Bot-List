@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include("./includes/head.ejs") -%>
+    </head>
+    <body onload="load()">
+        <%- include("./includes/nav.ejs") -%>
+        <div id="content">
+            <span class="header">
+                <h1>Discord Bot List</h1>
+                <p>Just another bot list for Discord.</p>
+            </span>
+            <div id="searchMore">
+                Would you like to 
+                <a href="/bots/search/">search all bots</a>
+            </div>
+            <div id="cards">
+                <span id="loading">Loading...</span>
+            </div>
+            <%- include('./includes/footer.ejs'); %>
+        </div>
+    </body>
+</html>

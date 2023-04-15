@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <%- include("./includes/head.ejs") %>
+  </head>
+  <body>
+    <%- include("./includes/nav.ejs") %>
+    <div id="content">
+      <span class="header">
+        <h1>Search</h1>
+        <p><span class="strikethrough">Just another bot list for Discord.</span></p>
+      </span>
+      <br />
+      <div class="input-holder">
+        <input id="searchbar" type="text" placeholder=" " />
+        <div class="placeholder">Search</div>
+      </div>
+      <div id="cards">
+        <% if (cards.length == 0) { %>
+        <p>No bots found. Try searching for something else.</p>
+        <% } else { %>
+        <% cards.forEach(card => { %>
+        <div class="card">
+          <img class="icon" src="<%= card.logo %>" />
+          <h2 class="title"><%= card.username %></h2>
+          <a class="likes" href="/bots/like/<%= card.botid %>">
+            <i class="far fa-heart"></i>
+            <%= card.likes || 0 %>
+          </a>
+          <p class="desc"><%= card.description %></p>
+          <a class="small button" href="/bots/<%= card.botid %>">View bot info</a>
+        </div>
+        <% }) %>
+        <% } %>
+      </div>
+      <br />
+      <%- include('./includes/footer.ejs'); %>
+    </div>
+    <script>
+      const node = document.getElementById("searchbar");
+      node.addEventListener("keyup", function(event) {
+      if (event.key === "Enter") {
+      location.href = `/bots/search/?q=${node.value}`
+      }
+      });
+    </script>
+  </body>
+</html>

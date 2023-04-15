@@ -1,8 +1,15 @@
-const { Event } = require('klasa');
+const Event = globalThis.TheHellTower.client.structures.event;
 const Bots = require("@models/bots");
 const { server: {id, mod_log_id} } = require("@root/config.json");
 
 module.exports = class extends Event {
+    constructor(...args) {
+        super(...args, {
+          name: "guildMemberRemove",
+          type: "on"
+        });
+    }
+
     async run(member) {
         let bots = await Bots.find({"owners.primary": member.user.id , state: { $ne: "deleted" } }, { _id: false });
         for (let bot of bots) {

@@ -1,24 +1,32 @@
-const { Command } = require('klasa');
-const { MessageEmbed } = require('discord.js');
-const Bots = require("@models/bots");
-
-const {web: {domain_with_protocol}} = require("@root/config.json");
+const Command = globalThis.TheHellTower.client.structures.command,
+    { EmbedBuilder } = require('discord.js'),
+    Bots = require("@models/bots"),
+    
+    {web: {domain_with_protocol}} = require("@root/config.json");
 
 module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
-            usage: "[User:user]"
+            name: "bots",
+            category: "Bots",
+            aliases: [],
+            description: "Check the bot(s) someone own",
+            usage: '[User:user]'
         });
     }
 
-    async run(message, [user]) {
-        let person = user ? user : message.author;
+    async run(message, args) {
+        let user =
+      message.mentions.users.size > 0
+        ? message.guild.members.cache.get(message.mentions.users?.first().id)
+        : args[0]
+        ? await this.client.users.fetch(args[0])
+        : message.guild.members.cache.get(message.author.id);
+        user = user?.user ? user.user : user;
 
-        if (person.bot) return;
+        let bots = await Bots.find({ $or: [{ "owners.primary": user.id },{ "owners.additional": user.id }], state: { $ne: "deleted" } }, { _id: false });
 
-        let bots = await Bots.find({ $or: [{ "owners.primary": person.id },{ "owners.additional": person.id }], state: { $ne: "deleted" } }, { _id: false });
-
-        if (bots.length === 0) return message.channel.send(`\`${person.tag}\` has no bots. Add one: <${domain_with_protocol}/add/>.`)
+        if (bots.length === 0) return message.channel.send(`\`${user.tag}\` has no bots. Add one: <${domain_with_protocol}/add/>.`)
         var cont = ``
         var un = false;
         for (let i = 0; i < bots.length; i++) {
@@ -28,12 +36,12 @@ module.exports = class extends Command {
                 cont += `~~<@${bot.botid}>~~\n`
             } else cont += `<@${bot.botid}>\n`
         }
-        let e = new MessageEmbed()
-            .setTitle(`${person.username}#${person.discriminator}'s bots`)
+        let e = new EmbedBuilder()
+            .setTitle(`${user.username}#${user.discriminator}'s bots`)
             .setDescription(cont)
             .setColor(0x6b83aa)
         if (un) e.setFooter(`Bots with strikethrough are unverified.`)
-        message.channel.send(e)
+        return message.reply({embeds: [e]});
     }
 
 };

@@ -1,0 +1,56 @@
+<div id="navTop">
+    <span class="nav link">
+        <a href="/">
+            <img src="/assets/img/logo.png" />
+        </a>
+    </span>
+    <span class="navtag">
+        <a href="/">
+            <span class="navtext keep">Discord Bot List</span>
+        </a>
+        <%- include("./arrow.ejs") -%>  
+        <% if (TheHellTower.client && !config.web.recaptcha_v2.site_key) { %>
+            <a href="/bots/<%= TheHellTower.client.botid %>">
+                <span class="navtext"><%= TheHellTower.client.username %></span>
+            </a>
+            <%- include("./arrow.ejs") -%>
+            <a href="/api/embed/<%= TheHellTower.client.botid %>" target="_blank">
+                <span class="navtext">Embed</span>
+            </a>
+        <% } %>
+        <% if ((req.baseUrl == "/user" || req.baseUrl == "/me") && userProfile) { %>
+            <a href="/user/<%= userProfile.id %>">
+                <span class="navtext"><%= userProfile.username %></span>
+            </a>
+        <% } %>
+        <% if (req.baseUrl == "/tag") { %>
+            <a href="/tag/<%= tag %>">
+                <span class="navtext capitalise"><%= tag %></span>
+            </a>
+        <% } %>
+    </span>
+    <a class="searcher navtag keep search" href="/bots/search/">
+        <div id="search" class="navtext">
+          <i class="fas fa-search"></i>
+          Search
+        </div>
+      </a>
+    <span class="dropdown">
+        <% if (req.user) { %>
+            <a id="login" class="navtag keep" href="/login">
+                <%= req.user.username %>#<%= req.user.discriminator %>
+            </a>
+            <span class="dd-content">
+                <a href="/add">Add bot</a>
+                <% if (req.user.staff) { %>
+                    <br>
+                    <a href="/admin">Dashboard</a>
+                <% } %>
+                <br>
+                <a href="/logout">Logout</a>
+            </span>
+        <% } else { %>
+            <a id="login" class="navtag keep" href="/login">Login</a>
+        <% } %>
+    </span>
+</div>

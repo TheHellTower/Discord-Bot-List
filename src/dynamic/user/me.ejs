@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../includes/head.ejs'); %>
+  </head>
+  <body>
+    <%- include('../includes/nav.ejs'); %>
+    <div id="content">
+      <span class="header">
+        <img class="icon" src="<%= userProfile.displayAvatarURL() %>" width="100px">
+        <h1><%= req.user.username %></h1>
+        <div class="badge-holder">
+          <% if (admin) { %>
+            <span class="badge">
+              <img src='/assets/img/admin.png' title='Admin' />
+              Admin
+            </span>
+          <% } %>
+          <% if (moderator) { %>
+            <span class="badge">
+              <img src='/assets/img/moderator.png' title='Moderator' />
+              Moderator
+            </span>
+          <% } %>
+        </div>
+      </span>
+      <br />
+      <a class="button" href='/add'>Add a bot</a>
+      <div id="cards">
+        <% cards.forEach(function(val, i) { %>
+          <div class="large card">
+            <% if (val.nsfw) { %>
+              <img class="icon nsfw" src="<%= val.logo %>" />
+            <% } else { %>
+              <img class="icon" src="<%= val.logo %>" />
+            <% } %>
+            <h2 class="title"><%= val.username %></h2>
+            <a class="likes" href="/bots/like/<%= val.botid %>">
+              <i class="far fa-heart"></i>
+              <%= val.likes || 0 %>
+            </a>
+            <p class="desc"><%= val.description %></p>
+            <a class="small button" href="/bots/<%= val.botid %>">View Bot</a>
+            <% if (val.state == "deleted") { %>
+              <a class="small half half-left button" href="/bots/resubmit/<%= val.botid %>">Resubmit</a>
+              <a class="small half half-right button button-red delete" href="#confirm" data-id="<%= val.botid %>" data-name="<%= val.username %>">Delete</a>
+            <% } else { %>
+              <a class="small half half-left button" href="/bots/edit/<%= val.botid %>">Edit Bot</a>
+              <a class="small half half-right button button-red delete" href="#confirm" data-id="<%= val.botid %>" data-name="<%= val.username %>">Delete</a>
+            <% } %>
+          </div>
+        <% }); %>
+        </div>
+      <%- include('../includes/footer.ejs'); %>
+    </div>
+    <script src="/assets/js/me.js"></script>
+  </body>
+</html>

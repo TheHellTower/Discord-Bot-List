@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('includes/head.ejs') %>
+  </head>
+  <body>
+    <%- include('includes/nav.ejs') %>
+    <div id="content">
+      <div id="img-holder">
+        <% if (bot.nsfw) { %>
+          <img id="bot-icon" class="nsfw" width="250px" height="250px" src="<%= bot.logo %>">
+        <% } else { %>
+          <img id="bot-icon" width="250px" height="250px" src="<%= bot.logo %>">
+        <% } %>
+        <div id="botprefix">
+          <code class="prefix"><%= bot.prefix %></code>
+        </div>
+      </div>
+      <div class="right">
+        <h2 style="display: inline;">
+          <%= bot.username %>
+          <% if (discord_verified) { %>
+            <i class="fas fa-medal verified"></i>
+            <span class="verified_tooltip">Verified Bot</span>
+          <% } %>
+          <a class="likes" href="/bots/like/<%= bot.botid %>">
+            <i class="far fa-heart"></i>
+            <%= bot.likes || 0 %>
+          </a>
+        </h2>
+        <% if (servers) { %>
+          <div class="servers"><%= `${servers} servers` %></div>
+        <% } %>
+        <div class="sts <%= botUser.presence?.status %>">
+          <i class="fas fa-circle"></i>
+          <span><%= botUser.presence?.status %></span>
+        </div>
+        <div class="summary"><%= bot.description %></div>
+        <div class="buttons-case">
+          <a class="bot-btns button" target="_blank" href="<%= bot.invite ? bot.invite : `https://discord.com/oauth2/authorize?client_id=${bot.botid}&scope=bot&permissions=0` %>">Invite</a>
+          <a class="bot-btns button" target="_blank" href="/api/embed/<%= bot.botid %>">Embed</a>
+        </div>
+        <div class="bot-buttons">
+          <% if (bot.support) { %>
+            <a class="small-link" target="_blank" href="<%= bot.support %>">Support Server</a>
+          <% } %>
+          <% if (bot.website) { %>
+            <a class="small-link" target="_blank" href="<%= bot.website %>">Website</a>
+          <% } %>
+          <% if (bot.github) { %>
+            <a class="small-link" target="_blank" href="<%= bot.github %>">Github</a>
+          <% } %>
+        </div>
+        <% if (bot.tags) { %>
+          <ul class="tags">
+            <% bot.tags.forEach(function(tag) { %>
+              <li>
+                <a class="bot-tag" href="/tag/<%= tag %>"><%= tag %></a>
+              </li>
+            <% }); %>
+          </ul>
+        <% } %>
+      </div>
+      <% if (isUrl) { %>
+        <div id="long" class="isurl">
+          <%- desc %>
+        </div>
+      <% } else { %>
+        <div id="long">
+          <span class="markdown-body"><%- desc %></span>
+        </div>
+      <% } %>
+      <div id="owners">
+        <% owners.forEach(function(person) { %>
+          <a class="owner" href="/user/<%= person.id %>">
+            <img height="30px" src="<%= person.tag !== 'Unknown User' ? person.displayAvatarURL({ format: 'png', size: 256 }) : '/assets/default-avatar.png' %>">
+            <span class="tag"><%= person.tag %></span>
+          </a>
+        <% }); %>
+      </div>
+      <%- include('./includes/footer.ejs'); %>
+    </div>
+  </body>
+</html>

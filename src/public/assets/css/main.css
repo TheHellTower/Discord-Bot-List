@@ -159,7 +159,7 @@ h2 {
 /* Cards begin */
 
 .desc {
-  min-height: 130px;
+  min-height: 100px;
 }
 
 .title {
@@ -546,6 +546,27 @@ textarea {
   -o-user-select: none;
   z-index: 10;
   transition: all 400ms ease;
+}
+
+.selectbox-submit {
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid var(--text-secondary);
+  width: calc(100%);
+  position: absolute;
+  top: 10px;
+  left: 0px;
+  font-size: 16px;
+  color: var(--text-secondary);
+  padding: 0px 15px;
+  background-color: var(--background-color);
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  z-index: 10;
+  color: var(--color);
 }
 
 hr {

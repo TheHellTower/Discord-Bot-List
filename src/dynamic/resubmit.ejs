@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("./includes/head.ejs") %> 
+    <title></title>
+    <link href="../../assets/css/tags.css" rel="stylesheet" />
+    <script src="../../assets/js/form.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head>
+  <body>
+    <%- include("./includes/nav.ejs") %>
+    <div id="content">
+      <span class="header">
+        <h1>Resubmit</h1>
+        <p>You can edit your bot or find your bot auth details below.</p>
+      </span>
+      <br />
+      <form class="center">
+        <div class="input-holder">
+          <input id="botid" class="input" type="text" placeholder=" " value="<%- bot.botid %>" readonly="" />
+          <div class="placeholder">Client ID</div>
+        </div>
+        <br />
+        <div class="input-holder">
+          <input id="prefix" class="input" type="text" placeholder=" " value="<%- bot.prefix %>" />
+          <div class="placeholder">Prefix</div>
+        </div>
+        <br>
+      <div class="input-holder">
+        <select class="selectbox-submit" id="marknsfw">
+          <option value="true"<%- bot.nsfw ? " selected" : "" %>>Yes</option>
+          <option value="false"<%- !bot.nsfw ? " selected" : "" %>>No</option>
+        </select>
+        <div class="textarea-placeholder">NSFW</div>
+      </div>
+      <br>
+      <br />
+        <div class="input-holder">
+          <input id="description" class="input" maxlength=max_summary_length type="text" placeholder=" " value="<%- bot.description %>" />
+          <div class="placeholder">Summary</div>
+        </div>
+        <br />
+        <div class="input-holder">
+          <input id="invite" class="input" type="text" placeholder=" " value="<%- bot.invite %>" />
+          <div class="placeholder">Custom Invite</div>
+        </div>
+        <br />
+        <div class="input-holder">
+          <textarea id="longdesc" class="input" rows="7"><%- bot.long %></textarea>
+          <div class="textarea-placeholder">Description</div>
+        </div>
+        <br />
+        <div class="input-holder">
+          <input id="note" class="input" maxlength=max_summary_length type="text" placeholder=" " />
+          <div class="placeholder">Note to admin</div>
+        </div>
+        <br />
+        <div class="input-holder">
+          <input id="owner-ids" class="input xinput" type="text" placeholder=" " value="<%- bot.additional %>" />
+          <div class="placeholder">Additional Owner IDs</div>
+        </div>
+        <br />
+        <div class="center-inline g-recaptcha" data-callback="update_token" data-sitekey="<%- site_key %>" data-theme="req.cookies['theme'] || 'dark'"></div>
+        <a class="button" onclick="submit()">Resubmit</a>
+        <br />
+      </form>
+      <%- include('./includes/footer.ejs'); %>
+    </div>
+  </body>
+</html>

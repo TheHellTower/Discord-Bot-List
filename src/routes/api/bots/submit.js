@@ -66,14 +66,15 @@ route.post("/:id", auth, async (req, res) => {
             website: data.website,
             github: data.github,
             tags: data.tags,
-            note: data.note,
-            owners
+            note: `${data.note || "No Note"}`,
+            owners,
+            nsfw: data.marknsfw === "true" ? true : false
         });
     } else {
         new Bots({
             username: bot.username,
             botid: req.params.id,
-            logo: `https://cdn.discordapp.com/avatars/${req.params.id}/${bot.avatar}.png?size=256`,
+            logo: `https://cdn.discordapp.com/avatars/${req.params.id}/${bot.avatar}.png`,
             invite: data.invite,
             description: data.description,
             long: data.long,
@@ -83,8 +84,9 @@ route.post("/:id", auth, async (req, res) => {
             website: data.website,
             github: data.github,
             tags: data.tags,
-            note: data.note,
-            owners
+            note: `${data.note || "No Note"}`,
+            owners,
+            nsfw: data.marknsfw === "true" ? true : false
         }).save();
     }
     try {

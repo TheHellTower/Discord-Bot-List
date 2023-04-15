@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { auth } = require("@utils/discordApi");
 const Bots = require("@models/bots");
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const route = Router();
 
 const { server: { id, mod_log_id } } = require("@root/config.json")
@@ -17,28 +17,36 @@ route.post("/:id", auth, async function (req, res) {
 
     // Update bot in database
     let botUser = await req.app.get('client').users.fetch(req.params.id);
-    await Bots.updateOne({ botid: req.params.id }, { $set: { state: "deleted", likes: 0, servers: [], note: undefined, logo: botUser.displayAvatarURL({ format: "png", size: 256 }) } });
+    
+    /*var botNotFound = await req.app.get('client').guilds.cache.get(globalThis.config.server.id).members.fetch(req.params.id).then(() => botNotFound = false).catch(() => botNotFound = true);
+    if (botNotFound) return res.json({ success: false, message: 'Bot not found in the server' });*/
+
+    await Bots.updateOne({ botid: req.params.id }, { $set: { state: "deleted", likes: 0, servers: [], note: undefined, logo: `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.avatar}.png` } });
 
     // Send messages
     let owners = [bot.owners.primary].concat(bot.owners.additional)
     let modLog = await req.app.get('client').channels.cache.get(mod_log_id);
-    modLog.send(
-        new MessageEmbed()
+    var embed = new EmbedBuilder()
             .setTitle('Bot Denied')
-            .addField(`Bot`, `<@${bot.botid}>`, true)
-            .addField(`Owner(s)`, owners.map(x => x ? `<@${x}>` : ""), true)
-            .addField("Mod", req.user.username, true)
-            .addField("Reason", reason, true)
+            .addFields(
+                { name: "Bot", value: `<@${bot.botid}>`, inline: true },
+                { name: "Owner(s)", value: `${owners.map(x => x ? `<@${x}>` : "")}`, inline: true },
+                { name: "Mod", value: `${req.user.username}`, inline: true },
+                { name: "Reason", value: `${reason || "No Reason"}`, inline: true }
+            )
             .setThumbnail(botUser.displayAvatarURL({format: "png", size: 256}))
             .setTimestamp()
-            .setColor(0x26ff00)
-        );
-    modLog.send(owners.map(x => x ? `<@${x}>` : "")).then(m => { m.delete() });
+            .setColor(0x26ff00);
+    modLog.send({
+        embeds: [embed]
+    });
+    let msg = await modLog.send(`${owners.map(x => x ? `<@${x}>` : "")}`);
+    msg.delete();
 
     // Update developer roles and send DM
     owners = await req.app.get('client').guilds.cache.get(id).members.fetch({user:owners})
     owners.forEach(o => {
-        o.send(`Your bot \`${bot.username}\` has been removed:\n>>> ${reason}`)
+        o.send(`Your bot \`${bot.username}\` has been denied:\n>>> ${reason}`).catch(() => {});
     })
     
     // Kick bot

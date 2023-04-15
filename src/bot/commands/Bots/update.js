@@ -1,12 +1,12 @@
-const { Command } = require('klasa');
-const Bots = require("@models/bots");
+const Command = globalThis.TheHellTower.client.structures.command,
+    Bots = require("@models/bots");
 
 module.exports = class extends Command {
     constructor(...args) {
         super(...args, {
-            runIn: ['text'],
-            permLevel: 8,
-            botPerms: ["SEND_MESSAGES"],
+            name: "update",
+            category: "Bots",
+            aliases: [],
             description: "Update the bots in the server."
         });
     }
@@ -20,14 +20,14 @@ module.exports = class extends Command {
     }
 
     async update(client) {
-        let bots = await Bots.find({}, { _id: false })
+        let bots = await Bots.find({}, { _id: false });
         let updates = []
         for (let bot of bots) {
-            let botUser = client.users.cache.get(bot.id);
+            let botUser = client.users.cache.get(bot.botid);
             if (!botUser) 
                 updates.push({updateOne: {filter: {botid: bot.id}, update: { state: "deleted", owners: {primary: bot.owners.primary, additional: []} }}})
-            if (bot.logo !== botUser.displayAvatarURL({format: "png", size: 256}))
-                updates.push({updateOne: {filter: {botid: bot.id}, update: { logo: botUser.displayAvatarURL({format: "png", size: 256})}}});
+            if (bot.logo !== `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.avatar}.png`)
+                updates.push({updateOne: {filter: {botid: bot.id}, update: { logo: `https://cdn.discordapp.com/avatars/${botUser.id}/${botUser.avatar}.png` }}});
             if (bot.username !== botUser.username)
                 updates.push({updateOne: {filter: {botid: bot.id}, update: { username: botUser.username }}})
         }
