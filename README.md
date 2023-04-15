@@ -1,6 +1,6 @@
 # About
 
-## ROADMAP FOR FIRST COMMIT(when a condition will be met)
+## ROADMAP FOR UPDATES
 
 <strong>To see the roadmap you can click here to now see the created [roadmap/project board](https://github.com/users/TheHellTower/projects/1) to follow the development.</strong>
 
