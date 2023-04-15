@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 
-const { discord_client: {secret} } = require("@root/config.json");
+const { discord_client: {secret, useHTTPS} } = require("@root/config.json");
 
 require("@utils/passport.js");
 
@@ -26,6 +26,7 @@ class App {
         secret,
         resave: false,
         saveUninitialized: false,
+        cookie: { secure: useHTTPS }
       })
     );
     this.express.use(passport.initialize());

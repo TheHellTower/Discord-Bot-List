@@ -30,6 +30,7 @@ If you have any issues, check the [FAQs](https://github.com/TheHellTower/Discord
  - Bot resubmit option
  - Bot widget
  - Server count API
+ - Mark bot as NSFW when submitting
 
 # Stargazers
 [![Stargazers repo roster for @TheHellTower/Discord-Bot-List](https://reporoster.com/stars/dark/notext/TheHellTower/Discord-Bot-List)](https://github.com/TheHellTower/Discord-Bot-List/stargazers)
