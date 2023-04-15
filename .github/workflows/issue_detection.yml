@@ -1,0 +1,37 @@
+name: Issues Detection(Owner = Label + Lock)
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  lock-issues:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.ISSUES_TOKEN }} # define GITHUB_TOKEN as ISSUES_TOKEN
+    if: ${{ github.event.issue.user.login == github.repository_owner }} #If issue opened is repository owner
+    steps:
+      - name: Label <TheHellTower>
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const lockParams = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              labels: ["TheHellTower"]
+            };
+            return github.issues.update(lockParams);
+          github-token: ${{ env.GITHUB_TOKEN }}
+      - name: Lock Issue's Chat
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            await github.request('PUT /repos/{owner}/{repo}/issues/{issue_number}/lock', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber
+            });
+          github-token: ${{ env.GITHUB_TOKEN }}
