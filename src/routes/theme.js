@@ -10,7 +10,7 @@ route.get("/", async (req, res) => {
 
   theme = theme === undefined ? "dark" : theme;
 
-  res.sendFile(path.join(_Dirname, `../dynamic/theme/${theme}.css`));
+  res.sendFile(path.join(__dirname, `../dynamic/theme/${theme}.css`));
 });
 
 module.exports = route;

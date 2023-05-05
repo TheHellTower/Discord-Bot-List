@@ -21,7 +21,7 @@ route.get("/:id", async (req, res) => {
       .members.fetch(bot.owners.primary);
     const avatar = await resolveImage(bot.logo);
     const verified = await resolveImage(
-      path.join(_Dirname, "./verified_badge.png")
+      path.join(__dirname, "./verified_badge.png")
     );
     const botUser = await req.app
       .get("client")

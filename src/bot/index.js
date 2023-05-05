@@ -41,7 +41,7 @@ client.once("ready", () => {
 });
 
 module.exports.init = async (token) => {
-  client.userBaseDirectory = _Dirname;
+  client.userBaseDirectory = __dirname;
   globalThis.TheHellTower.client = client;
   Utils.loadCommands();
   Utils.loadEvents();

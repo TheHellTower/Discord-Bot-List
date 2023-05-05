@@ -22,7 +22,7 @@ class App {
 
     /* Middleware Functions */
     this.express.use(cookieParser());
-    this.express.use(express.static(`${_Dirname}/../public`));
+    this.express.use(express.static(`${__dirname}/../public`));
     this.express.use(
       session({
         secret,
@@ -51,7 +51,7 @@ class App {
   }
 
   loadRoutes() {
-    const routesPath = path.join(_Dirname, "../routes");
+    const routesPath = path.join(__dirname, "../routes");
     const routes = getFilesSync(routesPath);
 
     if (!routes.length) return this;
