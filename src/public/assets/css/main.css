@@ -222,7 +222,7 @@ h2 {
 }
 
 .small-link {
-  padding: 5px 5px;
+  padding: 5px;
   margin: 0 5px;
 }
 
@@ -557,7 +557,6 @@ textarea {
   top: 10px;
   left: 0px;
   font-size: 16px;
-  color: var(--text-secondary);
   padding: 0px 15px;
   background-color: var(--background-color);
   user-select: none;
@@ -633,7 +632,6 @@ hr {
 }
 
 .badge {
-  display: flex;
   align-items: center;
   display: inline-block;
   padding: 5px 10px;
@@ -756,7 +754,7 @@ a {
 
 .tags {
   list-style: none;
-  margin: 20px 0 0 0;
+  margin: 20px 0 0;
   overflow: hidden; 
   padding: 0;
 }
@@ -837,7 +835,7 @@ a {
   border-radius: 6px;
   font-weight: normal;
   font-family: "Hind", Arial, sans-serif;
-  padding: 7px 0 5px 0;
+  padding: 7px 0 5px;
   position: absolute;
   bottom: calc(100% + 10px);
   left: -175%;
