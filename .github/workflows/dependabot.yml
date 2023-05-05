@@ -6,8 +6,6 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
-  env:
-    GITHUB_TOKEN: ${{ secrets.ISSUES_TOKEN }} # define GITHUB_TOKEN as ISSUES_TOKEN
   dependabot:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +25,7 @@ jobs:
         with:
           command: "bundle exec dependabot"
           args: "--update-config --allow-duplicate-dependencies --ignore-dependencies=none"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ISSUES_TOKEN }}
           directory: "/"
 
       - name: Commit Dependabot changes
