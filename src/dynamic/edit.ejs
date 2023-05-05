@@ -34,7 +34,7 @@
             </div>
             <br>
             <div class="input-holder">
-              <input id="description" class="input" maxlength=<%= max_summary_length %> type='text' placeholder=' ' value=<%= bot.description %>>
+              <input id="description" class="input" maxlength=<%= maxSummaryLength %> type='text' placeholder=' ' value=<%= bot.description %>>
               <div class="placeholder">Summary</div>
             </div>
             <br>
@@ -45,7 +45,7 @@
             <br>
             <div class="input-holder">
               <select id="tags" data-placeholder="Select tags" multiple>
-                <% bot_tags.forEach((tag) => { %>
+                <% botTags.forEach((tag) => { %>
                   <% if (bot.tags && bot.tags.includes(tag)) { %>
                     <option selected><%= tag %></option>
                   <% } else { %>
