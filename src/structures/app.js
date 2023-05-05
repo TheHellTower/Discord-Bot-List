@@ -4,7 +4,9 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 
-const { discord_client: {secret, useHTTPS} } = require("@root/config.json");
+const {
+  discordClient: { secret, useHTTPS },
+} = require("@root/config.json");
 
 require("@utils/passport.js");
 
@@ -18,24 +20,28 @@ class App {
     this.express.set("client", client);
     this.express.locals = locals;
 
-    /* Middleware Functions */;
+    /* Middleware Functions */
     this.express.use(cookieParser());
-    this.express.use(express.static(__dirname + "/../public"));
+    this.express.use(express.static(`${_Dirname}/../public`));
     this.express.use(
       session({
         secret,
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: useHTTPS }
+        cookie: { secure: useHTTPS },
       })
     );
     this.express.use(passport.initialize());
     this.express.use(passport.session());
     this.express.use((req, _, next) => {
-      if (!["/theme", "/login"].includes(req.originalUrl) && !req.originalUrl.startsWith("/api"))
-        req.session.url = req.originalUrl
-      next()
-    })
+      if (
+        !["/theme", "/login"].includes(req.originalUrl) &&
+        !req.originalUrl.startsWith("/api")
+      ) {
+        req.session.url = req.originalUrl;
+      }
+      next();
+    });
 
     this.loadRoutes().loadErrorHandler();
   }
@@ -45,7 +51,7 @@ class App {
   }
 
   loadRoutes() {
-    const routesPath = path.join(__dirname, "../routes");
+    const routesPath = path.join(_Dirname, "../routes");
     const routes = getFilesSync(routesPath);
 
     if (!routes.length) return this;
@@ -70,13 +76,14 @@ class App {
     this.express.use((req, res) => {
       res.status(404);
 
-      if (req.accepts("html")) return res.render("404", {req});
+      if (req.accepts("html")) return res.render("404", { req });
 
-      if (req.accepts("json"))
+      if (req.accepts("json")) {
         return res.send({
           status: 404,
           error: "Not found",
         });
+      }
 
       res.type("txt").send("404 - Not found");
     });

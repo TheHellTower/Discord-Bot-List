@@ -1,23 +1,28 @@
-const { Strategy } = require('passport-discord');
-const passport = require('passport');
+const { Strategy } = require("passport-discord");
+const passport = require("passport");
 
-const { web: {domain_with_protocol}, discord_client: {id, secret} } = require("@root/config.json");
- 
-var scopes = ['identify'];
- 
-passport.use(new Strategy({
-    clientID: id,
-    clientSecret: secret,
-    callbackURL: `${domain_with_protocol}/api/callback`,
-    scope: scopes
-},
-function(accessToken, refreshToken, profile, cb) {
-    return cb("", profile);
-}))
+const {
+  web: { domainWithProtocol },
+  discordClient: { id, secret },
+} = require("@root/config.json");
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
+const scopes = ["identify"];
+
+passport.use(
+  new Strategy(
+    {
+      clientID: id,
+      clientSecret: secret,
+      callbackURL: `${domainWithProtocol}/api/callback`,
+      scope: scopes,
+    },
+    (accessToken, refreshToken, profile, cb) => cb("", profile)
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
 });

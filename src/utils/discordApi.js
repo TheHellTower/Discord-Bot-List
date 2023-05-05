@@ -1,54 +1,70 @@
-const https = require('https');
+const https = require("https");
 
-const { server: { role_ids: { bot_verifier } }, server: { admin_user_ids, id } } = require("@root/config.json")
+const {
+  server: {
+    roleIds: { botVerifier },
+  },
+  server: { adminUserIds, id },
+} = require("@root/config.json");
 
-module.exports.auth = async(req, res, next) => {
-    if (!req.user) return res.redirect("/login");
-    
-    req.user.staff = false;
+module.exports.auth = async (req, res, next) => {
+  if (!req.user) return res.redirect("/login");
 
-    try {
-        const member = await req.app.get('client').guilds.cache.get(id).members.fetch(req.user.id);
-        if (admin_user_ids.includes(req.user.id) || member.roles.cache.has(bot_verifier))
-            req.user.staff = true
-    } catch(_) {}
+  req.user.staff = false;
 
-    return next();
-}
+  try {
+    const member = await req.app
+      .get("client")
+      .guilds.cache.get(id)
+      .members.fetch(req.user.id);
+    if (
+      adminUserIds.includes(req.user.id) ||
+      member.roles.cache.has(botVerifier)
+    ) {
+      req.user.staff = true;
+    }
+  } catch (_) {}
+
+  return next();
+};
 
 module.exports.getUser = async (user) => {
-    let { accessToken } = user;
+  const { accessToken } = user;
 
-    const options = {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-    };
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
 
-    const req = https.request('https://discord.com/api/users/@me', options, (res) => {
-        console.log(`statusCode: ${res.statusCode}`);
-        let data = '';
+  const req = https.request(
+    "https://discord.com/api/users/@me",
+    options,
+    (res) => {
+      console.log(`statusCode: ${res.statusCode}`);
+      let data = "";
 
-        res.on('data', (chunk) => {
-            data += chunk;
-        });
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
 
-        res.on('end', async () => {
-            user = JSON.parse(data);
-            user = await user.json();
-            
-            if (user.code === 0) return false;
-            return user;
-        });
-    });
+      res.on("end", async () => {
+        user = JSON.parse(data);
+        user = await user.json();
 
-    req.on('error', (error) => {
-        console.error(error);
-    });
+        if (user.code === 0) return false;
+        return user;
+      });
+    }
+  );
 
-    req.end();      
+  req.on("error", (error) => {
+    console.error(error);
+  });
 
-    if (user.code === 0) return false;
-    return user;
+  req.end();
+
+  if (user.code === 0) return false;
+  return user;
 };

@@ -6,21 +6,35 @@ const Bots = require("@models/bots");
 const { server } = require("@root/config.json");
 
 const route = Router();
-route.use(bodyParser.urlencoded({extended: true}));
+route.use(bodyParser.urlencoded({ extended: true }));
 
 route.delete("/:id", auth, async (req, res) => {
-    let {id} = req.params;
-    
-    const bot = await Bots.findOne({ botid: id }, { _id: false })
+  const { id } = req.params;
 
-    if (!bot) return res.sendStatus(404)
-    if (bot.owners.primary !== req.user.id && !server.admin_user_ids.includes(req.user.id)) return res.sendStatus(403)
-    
-    await Bots.deleteOne({ botid: id })
+  const bot = await Bots.findOne({ botid: id }, { Id: false });
 
-    req.app.get('client').channels.cache.get(server.mod_log_id).send(`<@${req.user.id}> has deleted <@${bot.botid}>`);
-    req.app.get('client').guilds.cache.get(server.id).members.fetch(id).then(bot => {bot.kick()}).catch(() => {})
-    res.sendStatus(200)
+  if (!bot) return res.sendStatus(404);
+  if (
+    bot.owners.primary !== req.user.id &&
+    !server.adminUserIds.includes(req.user.id)
+  )
+    return res.sendStatus(403);
+
+  await Bots.deleteOne({ botid: id });
+
+  req.app
+    .get("client")
+    .channels.cache.get(server.modLogId)
+    .send(`<@${req.user.id}> has deleted <@${bot.botid}>`);
+  req.app
+    .get("client")
+    .guilds.cache.get(server.id)
+    .members.fetch(id)
+    .then((bot) => {
+      bot.kick();
+    })
+    .catch(() => {});
+  res.sendStatus(200);
 });
 
 module.exports = route;

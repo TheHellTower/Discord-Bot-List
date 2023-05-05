@@ -12,9 +12,9 @@ route.use("/tag", tag);
 route.use("/api", api);
 route.use("/theme", theme);
 
-route.get('/', (req, res) => {
-    if (!req.query.q) res.render('index', {req});
-    else res.redirect(`/bots/search?q=${encodeURIComponent(req.query.q)}`)
+route.get("/", (req, res) => {
+  if (!req.query.q) res.render("index", { req });
+  else res.redirect(`/bots/search?q=${encodeURIComponent(req.query.q)}`);
 });
 
 module.exports = route;

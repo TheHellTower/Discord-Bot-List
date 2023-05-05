@@ -5,7 +5,8 @@ module.exports = (filepath) => {
 
   if (!fs.existsSync(filepath)) fs.mkdirSync(filepath);
 
-  const files = fs.readdirSync(filepath, { withFileTypes: true })
+  const files = fs
+    .readdirSync(filepath, { withFileTypes: true })
     .filter((entry) => !entry.isDirectory())
     .map((entry) => entry.name);
 

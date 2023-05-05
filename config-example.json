@@ -1,41 +1,41 @@
 {
-    "mongo_url": "",
+    "mongoUrl": "",
     "server": {
         "id": "",
         "invite": "",
-        "mod_log_id": "",
-        "like_log": "",
-        "admin_user_ids": [],
-        "role_ids": {
+        "modLogId": "",
+        "likeLog": "",
+        "adminUserIds": [],
+        "roleIds": {
             "bot": "",
             "unverified": "",
             "verified": "",
 
-            "bot_developer": "",
-            "bot_verifier": ""
+            "botDeveloper": "",
+            "botVerifier": ""
         }
     },
-    "bot_options": {
-        "bot_tags": [],
-        "max_bot_tags": 6,
-        "max_owners_count": 4,
-        "max_summary_length": 120,
-        "min_description_length": 200,
-        "max_description_length": 500
+    "botOptions": {
+        "botTags": [],
+        "maxBotTags": 6,
+        "maxOwnersCount": 4,
+        "maxSummaryLength": 120,
+        "minDescriptionLength": 200,
+        "maxDescriptionLength": 500
     },
-    "discord_client": {
+    "discordClient": {
         "id": "",
         "secret": "",
         "token": "",
         "prefix": ""
     },
     "web": {
-        "domain_with_protocol": "",
+        "domainWithProtocol": "",
         "port": 80,
         "ratelimit": 30,
-        "recaptcha_v2": {
-            "site_key": "",
-            "secret_key": ""
+        "recaptchaV2": {
+            "siteKey": "",
+            "secretKey": ""
         }
     }
 }

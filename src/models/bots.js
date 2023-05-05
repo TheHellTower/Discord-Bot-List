@@ -3,101 +3,101 @@ const mongoose = require("mongoose");
 const botsSchema = new mongoose.Schema({
   addedAt: {
     default: () => new Date(),
-    type: Date
+    type: Date,
   },
   username: {
     type: String,
-    required: true
+    required: true,
   },
   botid: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   logo: {
     type: String,
-    required: true
+    required: true,
   },
   invite: {
-    type: String
+    type: String,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   long: {
     type: String,
-    required: true
+    required: true,
   },
   prefix: {
     type: String,
-    required: true
+    required: true,
   },
-  state:  {
+  state: {
     type: String,
     required: true,
-    default: "unverified"
+    default: "unverified",
   },
   support: {
-    type: String
+    type: String,
   },
   website: {
-    type: String
+    type: String,
   },
   github: {
-    type: String
+    type: String,
   },
   webhook: {
-    type: String
+    type: String,
   },
   tags: {
     type: Array,
     required: false,
-    default: []
+    default: [],
   },
   owners: {
-      primary: {
-        type: String,
-        required: true
-      },
-      additional: {
-        type: Array,
-        default: []
-      }
+    primary: {
+      type: String,
+      required: true,
+    },
+    additional: {
+      type: Array,
+      default: [],
+    },
   },
   auth: {
-    type: String
+    type: String,
   },
   servers: [
     {
       time: {
         type: Date,
-        default: () => Date.now()
+        default: () => Date.now(),
       },
       count: {
         type: Number,
-        required: true
-      }
-    }
+        required: true,
+      },
+    },
   ],
   nsfw: {
     type: Boolean,
-    default: false
+    default: false,
   },
   likes: {
     type: Number,
-    default: 0
+    default: 0,
   },
   ratelimit: {
     time: {
       type: Date,
-      default: () => Date.now()
-    }
+      default: () => Date.now(),
+    },
   },
   note: {
     type: String,
-    required: false
-  }
+    required: false,
+  },
 });
 
 module.exports = mongoose.model("Bots", botsSchema);
