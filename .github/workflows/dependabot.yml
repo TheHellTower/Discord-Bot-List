@@ -6,6 +6,8 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
+  env:
+    GITHUB_TOKEN: ${{ secrets.ISSUES_TOKEN }} # define GITHUB_TOKEN as ISSUES_TOKEN
   dependabot:
     runs-on: ubuntu-latest
     steps:
