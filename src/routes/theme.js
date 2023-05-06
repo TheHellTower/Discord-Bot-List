@@ -10,7 +10,7 @@ route.get("/", globalThis.TheHellTower.rateLimits.theme, async (req, res) => {
 
   let { theme } = req.cookies;
 
-  if(!ALLOWED_THEMES.includes(theme)) theme = "dark";
+  if (!ALLOWED_THEMES.includes(theme)) theme = "dark";
 
   theme = theme === undefined ? "dark" : theme;
 

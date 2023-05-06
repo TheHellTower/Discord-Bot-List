@@ -34,9 +34,10 @@ module.exports = class extends Command {
       { Id: false }
     );
 
-    if (bots.length === 0) return message.channel.send(
-      `\`${user.tag}\` has no bots. Add one: <${domainWithProtocol}/add/>.`
-    );
+    if (bots.length === 0)
+      return message.channel.send(
+        `\`${user.tag}\` has no bots. Add one: <${domainWithProtocol}/add/>.`
+      );
     console.log(bots.length);
     let cont = "";
     let un = false;

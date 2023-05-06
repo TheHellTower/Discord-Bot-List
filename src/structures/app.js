@@ -14,9 +14,9 @@ globalThis.TheHellTower = {
     theme: rateLimit({
       windowMs: 1 * 60 * 1000, // 1 minute
       max: 10,
-    })
-  }
-}
+    }),
+  },
+};
 
 const {
   discordClient: { secret, useHTTPS },
