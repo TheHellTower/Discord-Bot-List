@@ -5,7 +5,7 @@ const route = Router();
 
 const ALLOWED_THEMES = ["dark", "light"];
 
-route.get("/", async (req, res) => {
+route.get("/", globalThis.TheHellTower.rateLimits.theme, async (req, res) => {
   res.set("Cache-Control", "no-store");
 
   let { theme } = req.cookies;
