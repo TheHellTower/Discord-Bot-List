@@ -15,7 +15,7 @@
       <div class="input-holder">
         <input id="searchbar" class="input" type="text" placeholder=" " />
         <div class="placeholder">Search</div>
-    </div>
+      </div>
       <div id="cards">
         <% if (cards.length == 0) { %>
         <p>No bots found. Try searching for something else.</p>
@@ -40,9 +40,9 @@
     <script>
       const node = document.getElementById("searchbar");
       node.addEventListener("keyup", function(event) {
-      if (event.key === "Enter") {
-      location.href = `/bots/search/?q=${node.value}`
-      }
+        if (event.key === "Enter") {
+          location.href = `/bots/search/?q=${encodeURIComponent(node.value)}`
+        }
       });
     </script>
   </body>
