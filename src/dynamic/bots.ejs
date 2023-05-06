@@ -37,18 +37,18 @@
         </div>
         <div class="summary"><%= bot.description %></div>
         <div class="buttons-case">
-          <a class="bot-btns button" target="_blank" href="<%= bot.invite ? bot.invite : `https://discord.com/oauth2/authorize?client_id=${bot.botid}&scope=bot&permissions=0` %>">Invite</a>
-          <a class="bot-btns button" target="_blank" href="/api/embed/<%= bot.botid %>">Embed</a>
+          <a class="bot-btns button" target="_blank" href="<%= bot.invite ? bot.invite : `https://discord.com/oauth2/authorize?client_id=${bot.botid}&scope=bot&permissions=0` %>" rel="noopener noreferrer">Invite</a>
+          <a class="bot-btns button" target="_blank" href="/api/embed/<%= bot.botid %>" >Embed</a>
         </div>
         <div class="bot-buttons">
           <% if (bot.support) { %>
-            <a class="small-link" target="_blank" href="<%= bot.support %>">Support Server</a>
+            <a class="small-link" target="_blank" href="<%= bot.support %>" rel="noopener noreferrer">Support Server</a>
           <% } %>
           <% if (bot.website) { %>
-            <a class="small-link" target="_blank" href="<%= bot.website %>">Website</a>
+            <a class="small-link" target="_blank" href="<%= bot.website %>" rel="noopener noreferrer">Website</a>
           <% } %>
           <% if (bot.github) { %>
-            <a class="small-link" target="_blank" href="<%= bot.github %>">Github</a>
+            <a class="small-link" target="_blank" href="<%= bot.github %>" rel="noopener noreferrer">Github</a>
           <% } %>
         </div>
         <% if (bot.tags) { %>
