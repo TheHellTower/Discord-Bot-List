@@ -32,7 +32,7 @@ client.structures = {
   event: require("./Structures/Event.js"),
 };
 
-globalThis.TheHellTower = { client: null };
+globalThis.TheHellTower.client = null;
 
 // Bot Status
 client.once("ready", () => {

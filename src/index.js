@@ -10,7 +10,6 @@ const {
 } = require("@root/config.json");
 
 (async () => {
-  console.log(mongoUrl);
   mongoose
     .connect(`${mongoUrl}`, { retryWrites: true, w: "majority" })
     .then(() => {

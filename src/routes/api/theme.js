@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const route = Router();
 
-route.get("/", async (req, res) => {
+route.get("/", globalThis.TheHellTower.rateLimits.theme, async (req, res) => {
   const { theme } = req.cookies;
   const l = "light";
   const d = "dark";

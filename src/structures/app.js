@@ -3,6 +3,17 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
+const rateLimit = require("express-rate-limit");
+
+globalThis.TheHellTower = {
+  client: null,
+  rateLimits: { //max = limit each IP to 100 requests per windowMs
+    theme: rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100,
+    })
+  }
+}
 
 const {
   discordClient: { secret, useHTTPS },
