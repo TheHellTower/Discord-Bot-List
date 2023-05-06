@@ -3,10 +3,14 @@ const path = require("path");
 
 const route = Router();
 
+const ALLOWED_THEMES = ["dark", "light"];
+
 route.get("/", async (req, res) => {
   res.set("Cache-Control", "no-store");
 
   let { theme } = req.cookies;
+
+  if(!ALLOWED_THEMES.includes(theme)) theme = "dark";
 
   theme = theme === undefined ? "dark" : theme;
 
