@@ -83,7 +83,7 @@ function submit() {
         }
         new Noty(opts).show();
       } else if (location.href.includes("/bots/edit")) {
-        const regex = /^\d+$/; // validate that input is a 24-character hexadecimal string
+        const regex = /^\d+$/; //This will ensure that id contains only digits (0-9) and will not match if it contains any other characters such as letters or symbols.
         const id = data.id.trim();
         if (regex.test(id)) location.href = `/bots/${encodeURIComponent(id)}`;
       } else location.href = "/success";
