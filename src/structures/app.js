@@ -6,11 +6,14 @@ const passport = require("passport");
 const rateLimit = require("express-rate-limit");
 
 globalThis.TheHellTower = {
-  client: null,
-  rateLimits: { //max = limit each IP to 100 requests per windowMs
+  /*
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    //max = limit each IP to 100 requests per windowMs
+  */
+  rateLimits: {
     theme: rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100,
+      windowMs: 1 * 60 * 1000, // 1 minute
+      max: 10,
     })
   }
 }
