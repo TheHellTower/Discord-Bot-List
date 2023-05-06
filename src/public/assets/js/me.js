@@ -12,7 +12,10 @@ $(document).ready(() => {
           Swal.update({
             title: "Cancelled",
             html: "",
+            showConfirmButton: false,
+            showCancelButton: false,
           });
+          document.getElementsByClassName("swal2-content")[0].remove();
           await wait(1);
         } else {
           await fetch(`/api/bots/${$(this).attr("data-id")}`, {
