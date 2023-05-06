@@ -82,9 +82,11 @@ function submit() {
           ];
         }
         new Noty(opts).show();
-      } else if (location.href.includes("/bots/edit"))
-        location.href = `/bots/${data.id}`;
-      else location.href = "/success";
+      } else if (location.href.includes("/bots/edit")) {
+        const regex = /^[0-9a-fA-F]{24}$/; // validate that input is a 24-character hexadecimal string
+        const id = data.id.trim();
+        if (regex.test(id)) location.href = `/bots/${encodeURIComponent(id)}`;
+      } else location.href = "/success";
     });
 }
 
@@ -193,10 +195,10 @@ $(document).ready(async () => {
   options.each(function () {
     const text = $(this).text();
     if ($(this).is(":selected")) {
-      active.append($("<a />").html(`<em>${text}</em><i></i>`));
+      active.append($("<a />").html(`<em>${escapeHtml(text)}</em><i></i>`));
       span.addClass("hide");
     } else {
-      list.append($("<li />").html(text));
+      list.append($("<li />").html(escapeHtml(text)));
     }
   });
 
@@ -215,7 +217,7 @@ $(document).ready(async () => {
       li.addClass("remove");
       const a = $("<a />")
         .addClass("notShown")
-        .html(`<em>${li.text()}</em><i></i>`)
+        .html(`<em>${escapeHtml(li.text())}</em><i></i>`)
         .hide()
         .appendTo(select.children("div"));
       a.slideDown(100, () => {
@@ -286,3 +288,12 @@ $(document).ready(async () => {
   });
 });
 CKEDITOR.disableAutoInline = true;
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}

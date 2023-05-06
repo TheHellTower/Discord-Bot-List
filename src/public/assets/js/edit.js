@@ -29,7 +29,7 @@ $(document).ready(async () => {
             title: "Cancelled",
             html: "",
             showConfirmButton: false,
-            showCancelButton: false
+            showCancelButton: false,
           });
           document.getElementsByClassName("swal2-content")[0].remove();
           await wait(1);
