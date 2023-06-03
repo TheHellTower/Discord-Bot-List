@@ -63,7 +63,7 @@
               <div class="placeholder">Only the primary owner can edit additional owners</div>
             </div>
             <br>
-            <div class="center-inline g-recaptcha" data-callback='update_token' data-sitekey=<%= siteKey %> data-theme=<%= req.cookies["theme"] || "dark" %>></div>
+            <div class="center-inline g-recaptcha" data-callback='updateToken' data-sitekey=<%= siteKey %> data-theme=<%= req.cookies["theme"] || "dark" %>></div>
             <a class="button submit-btn" onclick="submit()">Submit</a>
             <br>
           </form>
@@ -95,7 +95,7 @@
               <div class="placeholder">Likes Webhook</div>
             </div>
             <br />
-            <div class="center-inline g-recaptcha" data-callback="update_token" data-sitekey="<%= siteKey %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
+            <div class="center-inline g-recaptcha" data-callback="updateToken" data-sitekey="<%= siteKey %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
             <a class="button submit-btn" onclick="submit()">Submit</a>
             <br />
           </form>
