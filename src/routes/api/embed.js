@@ -7,18 +7,25 @@ const {
   server: { id },
 } = require("@root/config.json");
 
+const noAvatar = require("@utils/noAvatar");
+
 const path = require("path");
 
 const route = Router();
 
 route.get("/:id", async (req, res) => {
-  const bot = await Bots.findOne({ botid: req.params.id }, { Id: false });
+  var bot = await Bots.findOne({ botid: req.params.id }, { Id: false });
   if (!bot) return res.sendStatus(404);
   try {
     const owner = await req.app
       .get("client")
       .guilds.cache.get(id)
       .members.fetch(bot.owners.primary);
+
+      var bots = [bot];
+      await Promise.all(bots.map((bot) => noAvatar(req.app.get("client"), [bot])));
+      bot = bots[0];
+    
     const avatar = await resolveImage(bot.logo);
     const verified = await resolveImage(
       path.join(__dirname, "./verified_badge.png")

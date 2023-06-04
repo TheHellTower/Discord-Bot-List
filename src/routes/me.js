@@ -7,6 +7,7 @@ const {
 } = require("@root/config.json");
 
 const route = Router();
+const noAvatar = require("@utils/noAvatar");
 
 route.get("/", auth, async (req, res) => {
   const user = await req.app.get("client").users.fetch(req.user.id);
@@ -25,6 +26,8 @@ route.get("/", auth, async (req, res) => {
     return owners.includes(user.id);
   });
 
+  await Promise.all(bots.map((bot) => noAvatar(req.app.get("client"), [bot])));
+  
   res.render("user/me", {
     userProfile: user,
     cards: bots,
