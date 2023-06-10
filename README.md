@@ -38,6 +38,9 @@ If you have any issues, check the [FAQs](https://github.com/TheHellTower/Discord
 # Forkers
 [![Forkers repo roster for @TheHellTower/Discord-Bot-List](https://reporoster.com/forks/dark/notext/TheHellTower/Discord-Bot-List)](https://github.com/TheHellTower/Discord-Bot-List/network/members)
 
+# Thanks To
+- [@BluAimz](https://github.com/Sank6) for being a [Bug Hunter](https://github.com/TheHellTower/Discord-Bot-List/issues?q=is%3Aissue+author%3ABluAimz)
+
 # Credits
 
-[@Sank6](https://github.com/Sank6) for [Discord Bot List](https://github.com/Sank6/Discord-Bot-List)
+- [@Sank6](https://github.com/Sank6) for [Discord Bot List](https://github.com/Sank6/Discord-Bot-List)
