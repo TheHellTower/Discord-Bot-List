@@ -20,6 +20,10 @@ module.exports = class extends Command {
         ? await this.client.users.fetch(args[0])
         : message.guild.members.cache.get(message.author.id);
     user = user?.user ? user.user : user;
+    user = Object.assign({}, user, {
+      tag: user.tag.endsWith("#0") ? user.username : user.tag
+    });
+    
     if (!user || !user.bot)
       return message.reply({ content: "Ping a **bot** to mark as nsfw." });
     const bot = await Bots.findOne({ botid: user.id });

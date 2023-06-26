@@ -25,6 +25,9 @@ module.exports = class extends Command {
         ? await this.client.users.fetch(args[0])
         : message.guild.members.cache.get(message.author.id);
     user = user?.user ? user.user : user;
+    user = Object.assign({}, user, {
+      tag: user.tag.endsWith("#0") ? user.username : user.tag
+    });
 
     const bots = await Bots.find(
       {
@@ -49,7 +52,7 @@ module.exports = class extends Command {
       } else cont += `<@${bot.botid}>\n`;
     }
     const e = new EmbedBuilder()
-      .setTitle(`${user.username}#${user.discriminator}'s bots`)
+      .setTitle(`${user.tag}'s bots`)
       .setDescription(cont)
       .setColor(0x6b83aa);
     if (un) e.setFooter("Bots with strikethrough are unverified.");

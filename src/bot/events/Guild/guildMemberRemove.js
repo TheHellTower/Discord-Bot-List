@@ -13,6 +13,9 @@ module.exports = class extends Event {
   }
 
   async run(member) {
+    member = Object.assign({}, member, {
+      tag: member.user.tag.endsWith("#0") ? member.user.username : member.user.tag
+    });
     const bots = await Bots.find(
       { "owners.primary": member.user.id, state: { $ne: "deleted" } },
       { Id: false }
