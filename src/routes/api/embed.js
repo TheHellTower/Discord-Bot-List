@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { Canvas, resolveImage } = require("canvas-constructor");
+const { Canvas, resolveImage } = require("canvas-constructor/cairo");
 const Bots = require("@models/bots");
 
 const { WEBSITE_DOMAINWITHPROTOCOL, SERVER_ID } = process.env;
@@ -48,6 +48,14 @@ route.get("/:id", async (req, res) => {
     if (bot.servers[bot.servers.length - 1]) {
       img.printText(
         `${bot.servers[bot.servers.length - 1].count} servers | ${
+          bot.likes
+        } ❤️`,
+        30,
+        125
+      );
+    } else {
+      img.printText(
+        `Number of servers unknown | ${
           bot.likes
         } ❤️`,
         30,
