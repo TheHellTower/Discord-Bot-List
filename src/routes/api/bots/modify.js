@@ -4,7 +4,7 @@ const { auth } = require("@utils/discordApi");
 const checkFields = require("@utils/checkFields");
 const Bots = require("@models/bots");
 
-const { server } = require("@root/config.json");
+const { SERVER_MODLOG } = process.env;
 
 const opts = {
   allowedTags: [
@@ -104,7 +104,7 @@ route.patch("/:id", auth, async (req, res) => {
   );
   req.app
     .get("client")
-    .channels.cache.get(server.modLogId)
+    .channels.cache.get(SERVER_MODLOG)
     .send(`<@${req.user.id}> has updated <@${bot.botid}>`);
   return res.json({
     success: true,

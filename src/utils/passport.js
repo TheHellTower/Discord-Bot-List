@@ -1,19 +1,16 @@
 const { Strategy } = require("passport-discord");
 const passport = require("passport");
 
-const {
-  web: { domainWithProtocol },
-  discordClient: { id, secret },
-} = require("@root/config.json");
+const { WEBSITE_DOMAINWITHPROTOCOL, BOT_ID, BOT_SECRET } = process.env;
 
 const scopes = ["identify"];
 
 passport.use(
   new Strategy(
     {
-      clientID: id,
-      clientSecret: secret,
-      callbackURL: `${domainWithProtocol}/api/callback`,
+      clientID: BOT_ID,
+      clientSecret: BOT_SECRET,
+      callbackURL: `${WEBSITE_DOMAINWITHPROTOCOL}/api/callback`,
       scope: scopes,
     },
     (accessToken, refreshToken, profile, cb) => cb("", profile)

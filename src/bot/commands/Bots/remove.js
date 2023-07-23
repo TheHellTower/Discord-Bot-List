@@ -2,9 +2,7 @@ const Command = globalThis.TheHellTower.client.structures.command;
 const { EmbedBuilder } = require("discord.js");
 const Bots = require("@models/bots");
 
-const {
-  server: { modLogId, roleIds },
-} = require("@root/config.json");
+const { SERVER_MODLOG, SERVER_ROLE_BOTVERIFIER } = process.env;
 
 const reasons = {
   1: "Your bot was offline when we tried to verify it.",
@@ -46,7 +44,7 @@ module.exports = class extends Command {
     if (
       !owners.includes(message.author.id) &&
       !message.member.roles.cache.has(
-        globalThis.config.server.roleIds.botVerifier
+        SERVER_ROLE_BOTVERIFIER
       )
     ) {
       return message.reply(
@@ -137,18 +135,18 @@ module.exports = class extends Command {
                 .kick()
                 .then(() => {})
                 .catch((e) => {
-                  console.log(e);
+                  console.error(e);
                 });
             })
             .catch((e) => {
-              console.log(e);
+              console.error(e);
             });
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
 
         return m.edit({
-          content: `Removed <@${bot.botid}> Check <#${modLogId}>.`,
+          content: `Removed <@${bot.botid}> Check <#${SERVER_MODLOG}>.`,
           embeds: [],
         });
       }
@@ -156,6 +154,6 @@ module.exports = class extends Command {
   }
 
   async init() {
-    modLog = await this.client.channels.fetch(modLogId);
+    modLog = await this.client.channels.fetch(SERVER_MODLOG);
   }
 };

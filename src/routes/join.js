@@ -1,12 +1,11 @@
 const { Router } = require("express");
-const {
-  server: { invite },
-} = require("@root/config.json");
+
+const { SERVER_INVITE } = process.env;
 
 const route = Router();
 
 route.get("/", async (_, res) => {
-  res.redirect(invite);
+  res.redirect(SERVER_INVITE);
 });
 
 module.exports = route;

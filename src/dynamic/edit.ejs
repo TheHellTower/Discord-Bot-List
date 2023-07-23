@@ -34,7 +34,7 @@
             </div>
             <br>
             <div class="input-holder">
-              <input id="description" class="input" maxlength=<%= maxSummaryLength %> type='text' placeholder=' ' value=<%= bot.description %>>
+              <input id="description" class="input" maxlength=<%= WEBSITE_MAXSUMMARYLENGTH %> type='text' placeholder=' ' value=<%= bot.description %>>
               <div class="placeholder">Summary</div>
             </div>
             <br>
@@ -63,7 +63,7 @@
               <div class="placeholder">Only the primary owner can edit additional owners</div>
             </div>
             <br>
-            <div class="center-inline g-recaptcha" data-callback='updateToken' data-sitekey=<%= siteKey %> data-theme=<%= req.cookies["theme"] || "dark" %>></div>
+            <div class="center-inline g-recaptcha" data-callback='updateToken' data-sitekey=<%= WEBSITE_RECAPTCHA_PUBLIC %> data-theme=<%= req.cookies["theme"] || "dark" %>></div>
             <a class="button submit-btn" onclick="submit()">Submit</a>
             <br>
           </form>
@@ -95,7 +95,7 @@
               <div class="placeholder">Likes Webhook</div>
             </div>
             <br />
-            <div class="center-inline g-recaptcha" data-callback="updateToken" data-sitekey="<%= siteKey %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
+            <div class="center-inline g-recaptcha" data-callback="updateToken" data-sitekey="<%= WEBSITE_RECAPTCHA_PUBLIC %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
             <a class="button submit-btn" onclick="submit()">Submit</a>
             <br />
           </form>

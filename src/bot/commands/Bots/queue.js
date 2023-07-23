@@ -2,9 +2,7 @@ const Command = globalThis.TheHellTower.client.structures.command;
 const { EmbedBuilder } = require("discord.js");
 const Bots = require("@models/bots");
 
-const {
-  server: { id },
-} = require("@root/config.json");
+const { SERVER_ID } = process.env;
 
 module.exports = class extends Command {
   constructor(...args) {
@@ -23,7 +21,7 @@ module.exports = class extends Command {
 
     // No handling for a huge amount of bot ? Mmmmh...
     bots.forEach((bot) => {
-      cont += `<@${bot.botid}> : [Invite](https://discord.com/oauth2/authorize?client_id=${bot.botid}&scope=bot&guild_id=${id}&permissions=0)\n`;
+      cont += `<@${bot.botid}> : [Invite](https://discord.com/oauth2/authorize?client_id=${bot.botid}&scope=bot&guild_id=${SERVER_ID}&permissions=0)\n`;
     });
     if (bots.length === 0) cont = "Queue is empty";
 

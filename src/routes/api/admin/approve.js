@@ -5,9 +5,7 @@ const { EmbedBuilder } = require("discord.js");
 
 const route = Router();
 
-const {
-  server: { id, roleIds, modLogId },
-} = require("@root/config.json");
+const { SERVER_ID, SERVER_ROLE_BOT, SERVER_ROLE_VERIFIED, SERVER_ROLE_BOTDEVELOPER } = process.env;
 
 route.post("/:id", auth, async (req, res) => {
   if (!req.user.staff)
@@ -25,7 +23,7 @@ route.post("/:id", auth, async (req, res) => {
 
   var botNotFound = await req.app
     .get("client")
-    .guilds.cache.get(globalThis.config.server.id)
+    .guilds.cache.get(SERVER_ID)
     .members.fetch(req.params.id)
     .then(() => (botNotFound = false))
     .catch(() => (botNotFound = true));
@@ -75,7 +73,7 @@ route.post("/:id", auth, async (req, res) => {
       req.app
         .get("client")
         .guilds.cache.get(id)
-        .roles.cache.get(roleIds.botDeveloper)
+        .roles.cache.get(SERVER_ROLE_BOTDEVELOPER)
     );
     o.send(`Your bot \`${bot.username}\` has been verified.`).catch(() => {});
   });
@@ -86,7 +84,7 @@ route.post("/:id", auth, async (req, res) => {
     .guilds.cache.get(id)
     .members.fetch(req.params.id)
     .then((member) => {
-      member.roles.add([roleIds.bot, roleIds.verified]);
+      member.roles.add([SERVER_ROLE_BOT, SERVER_ROLE_VERIFIED]);
     });
 
   return res.json({ success: true });

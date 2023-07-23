@@ -4,9 +4,7 @@ const Bots = require("@models/bots");
 
 const noAvatar = require("@utils/noAvatar");
 
-const {
-  server: { id },
-} = require("@root/config.json");
+const { SERVER_ID } = process.env;
 
 const route = Router();
 
@@ -20,7 +18,7 @@ route.get("/", auth, async (req, res) => {
 
   res.render("admin", {
     bots,
-    id,
+    SERVER_ID,
     req,
   });
 });

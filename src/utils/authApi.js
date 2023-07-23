@@ -1,8 +1,6 @@
 const Bots = require("@models/bots");
 
-const {
-  web: { ratelimit },
-} = require("@root/config.json");
+const { WEBSITE_RATELIMIT } = process.env;
 
 module.exports = async (req, res, next) => {
   const auth = req.headers.authorization;
@@ -29,7 +27,7 @@ module.exports = async (req, res, next) => {
     });
   }
 
-  if (bot.ratelimit && Date.now() - bot.ratelimit < ratelimit * 1000)
+  if (bot.ratelimit && Date.now() - bot.ratelimit < WEBSITE_RATELIMIT * 1000)
     return res.json({ success: "false", error: "You are being ratelimited." });
 
   Bots.updateOne({ botid: req.params.id }, { ratelimit: Date.now() });

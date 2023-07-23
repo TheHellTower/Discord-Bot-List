@@ -1,8 +1,7 @@
 const Event = globalThis.TheHellTower.client.structures.event;
 const Bots = require("@models/bots");
-const {
-  server: { id, modLogId },
-} = require("@root/config.json");
+
+const { SERVER_ID, SERVER_MODLOG } = process.env;
 
 module.exports = class extends Event {
   constructor(...args) {
@@ -27,11 +26,11 @@ module.exports = class extends Event {
       );
       try {
         const botMember = await this.client.guilds.cache
-          .get(id)
+          .get(SERVER_ID)
           .members.fetch(bot.botid);
         botMember.kick();
         this.channels.cache
-          .get(modLogId)
+          .get(SERVER_MODLOG)
           .send(
             `<@${bot.botid}> has been deleted as <@${member.user.id}> (${member.user.tag}) has left.`
           );

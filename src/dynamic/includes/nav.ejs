@@ -9,7 +9,7 @@
             <span class="navtext keep">Discord Bot List</span>
         </a>
         <%- include("./arrow.ejs") -%>  
-        <% if (TheHellTower.client && !config.web.recaptchaV2.siteKey) { %>
+        <% if (TheHellTower.client && !WEBSITE_RECAPTCHA_PUBLIC) { %>
             <a href="/bots/<%= TheHellTower.client.botid %>">
                 <span class="navtext"><%= TheHellTower.client.username %></span>
             </a>

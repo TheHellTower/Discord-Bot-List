@@ -2,9 +2,7 @@ const { Router } = require("express");
 const { auth } = require("@utils/discordApi");
 const Bots = require("@models/bots");
 
-const {
-  server: { adminUserIds },
-} = require("@root/config.json");
+const { SERVER_ADMINUSERS } = process.env;
 
 const route = Router();
 const noAvatar = require("@utils/noAvatar");
@@ -31,7 +29,7 @@ route.get("/", auth, async (req, res) => {
   res.render("user/me", {
     userProfile: user,
     cards: bots,
-    admin: adminUserIds.includes(user.id),
+    admin: SERVER_ADMINUSERS.includes(user.id),
     moderator: req.user.staff,
     req,
   });

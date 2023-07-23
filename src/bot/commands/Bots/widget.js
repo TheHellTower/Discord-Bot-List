@@ -2,9 +2,7 @@ const Command = globalThis.TheHellTower.client.structures.command;
 const https = require("https");
 const Bots = require("@models/bots");
 
-const {
-  web: { domainWithProtocol },
-} = require("@root/config.json");
+const { WEBSITE_DOMAINWITHPROTOCOL } = process.env;
 
 module.exports = class extends Command {
   constructor(...args) {
@@ -27,7 +25,7 @@ module.exports = class extends Command {
     user = user?.user ? user.user : user;
     if (!user || !user.bot)
       return message.channel.send("You didn't ping a bot to get a widget of.");
-    const url = `${domainWithProtocol}/api/embed/${user.id}`;
+    const url = `${WEBSITE_DOMAINWITHPROTOCOL}/api/embed/${user.id}`;
 
     https
       .get(url, (res) => {
@@ -45,7 +43,7 @@ module.exports = class extends Command {
         });
       })
       .on("error", (err) => {
-        console.log(`Error: ${err.message}`);
+        console.error(`Error: ${err.message}`);
       });
   }
 };

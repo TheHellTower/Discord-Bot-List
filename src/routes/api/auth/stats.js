@@ -2,9 +2,7 @@ const { Router } = require("express");
 const bodyParser = require("body-parser");
 const Bots = require("@models/bots");
 
-const {
-  web: { ratelimit },
-} = require("@root/config.json");
+const { WEBSITE_RATELIMIT } = process.env;
 
 const authApi = require("@utils/authApi");
 
@@ -24,7 +22,7 @@ route.post("/:id", authApi, async (req, res) => {
   if (
     bot.servers.length > 0 &&
     bot.servers[bot.servers.length - 1] &&
-    Date.now() - bot.servers[bot.servers.length - 1].time < ratelimit * 1000
+    Date.now() - bot.servers[bot.servers.length - 1].time < WEBSITE_RATELIMIT * 1000
   )
     return res.json({ success: "false", error: "You are being ratelimited." });
 

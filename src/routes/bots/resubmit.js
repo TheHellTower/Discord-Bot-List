@@ -2,12 +2,8 @@ const { Router } = require("express");
 const { auth } = require("@utils/discordApi");
 const Bots = require("@models/bots");
 
-const {
-  web: {
-    recaptchaV2: { siteKey },
-  },
-  botOptions: { botTags, maxSummaryLength },
-} = require("@root/config.json");
+const { WEBSITE_BOTTAGS, WEBSITE_MAXDESCRIPTIONLENGTH } = process.env;
+const botTags = JSON.parse(WEBSITE_BOTTAGS);
 
 const route = Router();
 
@@ -21,8 +17,7 @@ route.get("/:id", auth, async (req, res) => {
     bot,
     user: req.user,
     botTags,
-    maxSummaryLength,
-    siteKey,
+    WEBSITE_MAXDESCRIPTIONLENGTH,
     req,
   });
 });

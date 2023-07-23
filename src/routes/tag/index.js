@@ -1,9 +1,8 @@
 const { Router } = require("express");
 const getList = require("@utils/getList");
 
-const {
-  botOptions: { botTags },
-} = require("@root/config.json");
+const { WEBSITE_BOTTAGS } = process.env;
+const botTags = JSON.parse(WEBSITE_BOTTAGS);
 
 const route = Router();
 

@@ -5,13 +5,6 @@ const {
   Collection,
 } = require("discord.js");
 
-const {
-  server: {
-    roleIds: { botVerifier },
-  },
-  discordClient: { prefix },
-} = require("@root/config.json");
-
 const client = new Client({
   intents: [
     GatewayIntentBits.GuildMembers,
@@ -37,7 +30,6 @@ globalThis.TheHellTower = { client: null };
 // Bot Status
 client.once("ready", () => {
   client.user.setActivity("Bots", { type: ActivityType.Watching });
-  globalThis.config = require("@root/config.json");
 });
 
 module.exports.init = async (token) => {

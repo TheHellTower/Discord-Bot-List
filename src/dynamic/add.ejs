@@ -34,7 +34,7 @@
       <br>
       <br>
       <div class="input-holder">
-        <input id="description" class="input" maxlength="<%= maxSummaryLength %>" type="text" placeholder=" ">
+        <input id="description" class="input" maxlength="<%= WEBSITE_MAXSUMMARYLENGTH %>" type="text" placeholder=" ">
         <div class="placeholder">Summary</div>
       </div>
       <br>
@@ -44,7 +44,7 @@
       </div>
       <br>
       <div class="input-holder">
-        <input id="note" class="input" maxlength="<%= maxSummaryLength %>" type="text" placeholder=" ">
+        <input id="note" class="input" maxlength="<%= WEBSITE_MAXSUMMARYLENGTH %>" type="text" placeholder=" ">
         <div class="placeholder">Note to admin</div>
       </div>
       <br>
@@ -54,7 +54,7 @@
       </div>
       <br>
       <div class="center-inline">
-        <div class="g-recaptcha" data-callback="updateToken" data-sitekey="<%= siteKey %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
+        <div class="g-recaptcha" data-callback="updateToken" data-sitekey="<%= WEBSITE_RECAPTCHA_PUBLIC %>" data-theme="<%= req.cookies['theme'] || 'dark' %>"></div>
       </div>
       <a class="button" onclick="submit()">Submit</a>
       <br>

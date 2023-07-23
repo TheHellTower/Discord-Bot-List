@@ -4,7 +4,7 @@ const checkFields = require("@utils/checkFields");
 const sanitizeHtml = require("sanitize-html");
 const Bots = require("@models/bots");
 
-const { server } = require("@root/config.json");
+const { SERVER_MODLOG, SERVER_ROLE_BOTVERIFIER } = process.env;
 
 const opts = {
   allowedTags: [
@@ -133,11 +133,11 @@ route.post("/:id", auth, async (req, res) => {
   try {
     await req.app
       .get("client")
-      .channels.cache.find((c) => c.id === server.modLogId)
+      .channels.cache.find((c) => c.id === SERVER_MODLOG)
       .send(
         `<@${req.user.id}> ${resubmit ? "re" : ""}submitted <@${
           req.params.id
-        }>: <@&${server.roleIds.botVerifier}>`
+        }>: <@&${SERVER_ROLE_BOTVERIFIER}>`
       );
     return res.json({ success: true, message: "Your bot has been added" });
   } catch (e) {

@@ -1,8 +1,6 @@
 const Event = globalThis.TheHellTower.client.structures.event;
 
-const {
-  server: { roleIds },
-} = require("@root/config.json");
+const { SERVER_ROLE_BOT, SERVER_ROLE_UNVERIFIED } = process.env;
 
 module.exports = class extends Event {
   constructor(...args) {
@@ -14,8 +12,8 @@ module.exports = class extends Event {
 
   async run(member) {
     if (member.user.bot) {
-      member.roles.add(member.guild.roles.cache.get(roleIds.bot));
-      member.roles.add(member.guild.roles.cache.get(roleIds.unverified));
+      member.roles.add(member.guild.roles.cache.get(SERVER_ROLE_BOT));
+      member.roles.add(member.guild.roles.cache.get(SERVER_ROLE_UNVERIFIED));
     }
   }
 };

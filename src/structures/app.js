@@ -18,9 +18,7 @@ globalThis.TheHellTower = {
   },
 };
 
-const {
-  discordClient: { secret, useHTTPS },
-} = require("@root/config.json");
+const { BOT_SECRET, WEBSITE_USEHTTPS } = process.env;
 
 require("@utils/passport.js");
 
@@ -39,10 +37,10 @@ class App {
     this.express.use(express.static(`${__dirname}/../public`));
     this.express.use(
       session({
-        secret,
+        secret: BOT_SECRET,
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: useHTTPS },
+        cookie: { secure: WEBSITE_USEHTTPS.toLowerCase() === "true" },
       })
     );
     this.express.use(passport.initialize());

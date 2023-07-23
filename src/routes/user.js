@@ -1,9 +1,7 @@
 const { Router } = require("express");
 const Bots = require("@models/bots");
 
-const {
-  server: { adminUserIds },
-} = require("@root/config.json");
+const { SERVER_ADMINUSERS } = process.env;
 
 const route = Router();
 
@@ -25,7 +23,7 @@ route.get("/:id", async (req, res) => {
   res.render("user/index", {
     userProfile: user,
     cards: bots,
-    admin: adminUserIds.includes(req.params.id),
+    admin: SERVER_ADMINUSERS.includes(req.params.id),
     moderator: user?.staff,
     req,
   });

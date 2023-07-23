@@ -13,7 +13,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/thehelltower/discord-bot-list/badge)](https://www.codefactor.io/repository/github/thehelltower/discord-bot-list)
 
 An open-sourced discord bot list.
-There's a [setup guide in the wiki](https://github.com/TheHellTower/Discord-Bot-List/wiki/Setup-Information) if you're interested. Put all the information in `config.json`.
+There's a [setup guide in the wiki](https://github.com/TheHellTower/Discord-Bot-List/wiki/Setup-Information) if you're interested. Put all the information in `.env`.
 The development branch may have newer additions/features, but is also potentially more buggy or even insecure. Use at your own risk.
 If you have any issues, check the [FAQs](https://github.com/TheHellTower/Discord-Bot-List/wiki/FAQs) first please.
 

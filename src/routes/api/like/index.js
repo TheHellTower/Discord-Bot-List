@@ -3,7 +3,8 @@ const https = require("https");
 const { auth } = require("@utils/discordApi");
 const Bots = require("@models/bots");
 const Users = require("@models/users");
-const { server } = require("@root/config.json");
+
+const { SERVER_LIKELOG } = process.env;
 
 const route = Router();
 
@@ -28,7 +29,7 @@ route.patch("/:id", auth, async (req, res) => {
   // Discord Webhook
   const channel = await req.app
     .get("client")
-    .channels.cache.get(server.likeLog);
+    .channels.cache.get(SERVER_LIKELOG);
   let webhook = (await channel.fetchWebhooks()).first();
   if (!webhook) {
     webhook = await channel.createWebhook({ name: "DBL" });
@@ -46,7 +47,6 @@ route.patch("/:id", auth, async (req, res) => {
       },
     };
     const req = https.request(bot.webhook, options, (res) => {
-      console.log(`statusCode: ${res.statusCode}`);
 
       res.on("data", (d) => {
         process.stdout.write(d);

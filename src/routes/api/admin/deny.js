@@ -5,9 +5,7 @@ const { EmbedBuilder } = require("discord.js");
 
 const route = Router();
 
-const {
-  server: { id, modLogId },
-} = require("@root/config.json");
+const { SERVER_ID, SERVER_MODLOG } = process.env;
 
 route.post("/:id", auth, async (req, res) => {
   if (!req.user.staff)
@@ -25,7 +23,7 @@ route.post("/:id", auth, async (req, res) => {
   // Update bot in database
   const botUser = await req.app.get("client").users.fetch(req.params.id);
 
-  /* var botNotFound = await req.app.get('client').guilds.cache.get(globalThis.config.server.id).members.fetch(req.params.id).then(() => botNotFound = false).catch(() => botNotFound = true);
+  /* var botNotFound = await req.app.get('client').guilds.cache.get(process.env.SERVER_ID).members.fetch(req.params.id).then(() => botNotFound = false).catch(() => botNotFound = true);
     if (botNotFound) return res.json({ success: false, message: 'Bot not found in the server' }); */
 
   await Bots.updateOne(
@@ -43,7 +41,7 @@ route.post("/:id", auth, async (req, res) => {
 
   // Send messages
   let owners = [bot.owners.primary].concat(bot.owners.additional);
-  const modLog = await req.app.get("client").channels.cache.get(modLogId);
+  const modLog = await req.app.get("client").channels.cache.get(SERVER_MODLOG);
   const embed = new EmbedBuilder()
     .setTitle("Bot Denied")
     .addFields(
@@ -68,7 +66,7 @@ route.post("/:id", auth, async (req, res) => {
   // Update developer roles and send DM
   owners = await req.app
     .get("client")
-    .guilds.cache.get(id)
+    .guilds.cache.get(SERVER_ID)
     .members.fetch({ user: owners });
   owners.forEach((o) => {
     o.send(
@@ -79,7 +77,7 @@ route.post("/:id", auth, async (req, res) => {
   // Kick bot
   req.app
     .get("client")
-    .guilds.cache.get(id)
+    .guilds.cache.get(SERVER_ID)
     .members.fetch(req.params.id)
     .then((member) => {
       if (member) member.kick();

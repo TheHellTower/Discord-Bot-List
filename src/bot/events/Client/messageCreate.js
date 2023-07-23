@@ -1,6 +1,6 @@
 const Event = globalThis.TheHellTower.client.structures.event;
 
-const config = require("@root/config.json");
+const { BOT_PREFIX } = process.env;
 
 module.exports = class extends Event {
   constructor(...args) {
@@ -19,26 +19,23 @@ module.exports = class extends Event {
     const mentionRegex = RegExp(`^<@!?${this.client.user.id}>( |)$`);
     const mentionRegexPrefix = RegExp(`^<@!${this.client.user.id}> `);
 
-    const { prefix } = config.discordClient;
-
     /// ////////////////////////////////////
     if (
       message.content.match(mentionRegex) ||
       message.content.match(mentionRegexPrefix)
     ) {
-      message.channel.send(`My prefix is  \`${prefix}\` !`);
+      message.channel.send(`My prefix is  \`${BOT_PREFIX}\` !`);
     }
-    if (!message.content.startsWith(prefix)) return;
+    if (!message.content.startsWith(BOT_PREFIX)) return;
 
     const [cmd, ...args] = message.content
-      .slice(prefix.length)
+      .slice(BOT_PREFIX.length)
       .trim()
       .split(/ +/g);
 
     const command =
       this.client.commands.get(cmd.toLowerCase()) ||
       this.client.commands.get(this.client.aliases.get(cmd.toLowerCase()));
-    // console.log(command);
 
     if (command) {
       const data = {
@@ -50,14 +47,13 @@ module.exports = class extends Event {
 
   async buildHelp(message) {
     const commands = await this.FetchCommands(message);
-    const { prefix } = message.guildSettings;
-
+    
     const helpMessage = [];
     for (const [category, list] of commands) {
       helpMessage.push(
         `**${category} Commands**:\n`,
         list
-          .map(this.formatCommand.bind(this, message, prefix, false))
+          .map(this.formatCommand.bind(this, message, BOT_PREFIX, false))
           .join("\n"),
         ""
       );
@@ -68,7 +64,6 @@ module.exports = class extends Event {
 
   async buildDisplay(message) {
     const commands = await this.FetchCommands(message);
-    const { prefix } = message.guildSettings;
     const display = new RichDisplay();
     const color = message.member.displayColor;
     for (const [category, list] of commands) {
@@ -78,7 +73,7 @@ module.exports = class extends Event {
           .setColor(color)
           .setDescription(
             list
-              .map(this.formatCommand.bind(this, message, prefix, true))
+              .map(this.formatCommand.bind(this, message, BOT_PREFIX, true))
               .join("\n")
           )
       );
@@ -87,13 +82,13 @@ module.exports = class extends Event {
     return display;
   }
 
-  formatCommand(message, prefix, richDisplay, command) {
+  formatCommand(message, BOT_PREFIX, richDisplay, command) {
     const description = isFunction(command.description)
       ? command.description(message.language)
       : command.description;
     return richDisplay
-      ? `• ${prefix}${command.name} → ${description}`
-      : `• **${prefix}${command.name}** → ${description}`;
+      ? `• ${BOT_PREFIX}${command.name} → ${description}`
+      : `• **${BOT_PREFIX}${command.name}** → ${description}`;
   }
 
   async FetchCommands(message) {

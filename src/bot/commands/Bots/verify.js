@@ -2,9 +2,7 @@ const Command = globalThis.TheHellTower.client.structures.command;
 const { EmbedBuilder } = require("discord.js");
 const Bots = require("@models/bots");
 
-const {
-  server: { modLogId, roleIds },
-} = require("@root/config.json");
+const { SERVER_MODLOG, SERVER_ROLE_BOTDEVELOPER, SERVER_ROLE_BOT, SERVER_ROLE_VERIFIED } = process.env;
 
 let modLog;
 
@@ -34,7 +32,7 @@ module.exports = class extends Command {
     let owners = [bot.owners.primary].concat(bot.owners.additional);
     if (
       !message.member.roles.cache.has(
-        globalThis.config.server.roleIds.botVerifier
+        process.env.SERVER_ROLE_BOTVERIFIER
       )
     )
       return message.reply("Only DBL admin(s) are allowed to verify bots.");
@@ -79,21 +77,21 @@ module.exports = class extends Command {
 
     owners = await message.guild.members.fetch({ user: owners });
     owners.forEach((o) => {
-      o.roles.add(message.guild.roles.cache.get(roleIds.botDeveloper));
+      o.roles.add(message.guild.roles.cache.get(SERVER_ROLE_BOTDEVELOPER));
       o.send(`Your bot \`${bot.username}\` has been verified.`).catch(() => {});
     });
     message.guild.members
       .fetch(message.client.users.cache.find((u) => u.id === bot.botid))
       .then((bot) => {
-        bot.roles.add([roleIds.bot, roleIds.verified]);
+        bot.roles.add([SERVER_ROLE_BOT, SERVER_ROLE_VERIFIED]);
       });
     return message.reply({
-      content: `Verified <@${bot.botid}> Check <#${modLogId}>.`,
+      content: `Verified <@${bot.botid}> Check <#${SERVER_MODLOG}>.`,
       embeds: [],
     });
   }
 
   async init() {
-    modLog = await this.client.channels.fetch(modLogId);
+    modLog = await this.client.channels.fetch(SERVER_MODLOG);
   }
 };

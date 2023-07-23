@@ -60,7 +60,7 @@
           <div class="placeholder">Additional Owner IDs</div>
         </div>
         <br />
-        <div class="center-inline g-recaptcha" data-callback="updateToken" data-sitekey="<%- siteKey %>" data-theme="req.cookies['theme'] || 'dark'"></div>
+        <div class="center-inline g-recaptcha" data-callback="updateToken" data-sitekey="<%- WEBSITE_RECAPTCHA_PUBLIC %>" data-theme="req.cookies['theme'] || 'dark'"></div>
         <a class="button" onclick="submit()">Resubmit</a>
         <br />
       </form>

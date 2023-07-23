@@ -1,11 +1,6 @@
 const https = require("https");
 
-const {
-  server: {
-    roleIds: { botVerifier },
-  },
-  server: { adminUserIds, id },
-} = require("@root/config.json");
+const { SERVER_ID, SERVER_ADMINUSERS, SERVER_ROLE_BOTVERIFIER } = process.env;
 
 module.exports.auth = async (req, res, next) => {
   if (!req.user) return res.redirect("/login");
@@ -15,11 +10,11 @@ module.exports.auth = async (req, res, next) => {
   try {
     const member = await req.app
       .get("client")
-      .guilds.cache.get(id)
+      .guilds.cache.get(SERVER_ID)
       .members.fetch(req.user.id);
     if (
-      adminUserIds.includes(req.user.id) ||
-      member.roles.cache.has(botVerifier)
+      SERVER_ADMINUSERS.includes(req.user.id) ||
+      member.roles.cache.has(SERVER_ROLE_BOTVERIFIER)
     ) {
       req.user.staff = true;
     }
@@ -42,7 +37,6 @@ module.exports.getUser = async (user) => {
     "https://discord.com/api/users/@me",
     options,
     (res) => {
-      console.log(`statusCode: ${res.statusCode}`);
       let data = "";
 
       res.on("data", (chunk) => {

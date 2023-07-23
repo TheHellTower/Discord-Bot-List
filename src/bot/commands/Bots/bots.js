@@ -2,9 +2,7 @@ const Command = globalThis.TheHellTower.client.structures.command;
 const { EmbedBuilder } = require("discord.js");
 const Bots = require("@models/bots");
 
-const {
-  web: { domainWithProtocol },
-} = require("@root/config.json");
+const { WEBSITE_DOMAINWITHPROTOCOL } = process.env;
 
 module.exports = class extends Command {
   constructor(...args) {
@@ -39,9 +37,8 @@ module.exports = class extends Command {
 
     if (bots.length === 0)
       return message.channel.send(
-        `\`${user.tag}\` has no bots. Add one: <${domainWithProtocol}/add/>.`
+        `\`${user.tag}\` has no bots. Add one: <${WEBSITE_DOMAINWITHPROTOCOL}/add>.`
       );
-    console.log(bots.length);
     let cont = "";
     let un = false;
     for (let i = 0; i < bots.length; i++) {

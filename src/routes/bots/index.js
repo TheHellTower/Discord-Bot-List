@@ -7,13 +7,7 @@ const edit = require("@routes/bots/edit");
 const like = require("@routes/bots/like");
 const Bots = require("@models/bots");
 
-const {
-  server: {
-    id,
-    adminUserIds,
-    roleIds: { botVerifier },
-  },
-} = require("@root/config.json");
+const { SERVER_ID, SERVER_ADMINUSERS, SERVER_ROLE_BOTVERIFIER } = process.env;
 
 const route = Router();
 
@@ -37,7 +31,7 @@ route.get("/:id", async (req, res) => {
   let error = false;
   const botUser = await req.app
     .get("client")
-    .guilds.cache.get(globalThis.config.server.id)
+    .guilds.cache.get(SERVER_ID)
     .members.fetch(bot.botid)
     .catch(() => {
       error = true;
@@ -74,14 +68,14 @@ route.get("/:id", async (req, res) => {
   if (
     bot.state == "unverified" &&
     (!req.user ||
-      (!owners.includes(req.user.id) && !adminUserIds.includes(req.user.id)))
+      (!owners.includes(req.user?.id) && !SERVER_ADMINUSERS.includes(req.user?.id)))
   ) {
     if (!req.user) return res.render("403", { req });
     const member = await req.app
       .get("client")
-      .guilds.cache.get(id)
+      .guilds.cache.get(SERVER_ID)
       .members.fetch(req.user.id);
-    if (!member || !member.roles.cache.has(botVerifier))
+    if (!member || !member.roles.cache.has(SERVER_ROLE_BOTVERIFIER))
       return res.render("403", { req });
   }
 
@@ -89,7 +83,7 @@ route.get("/:id", async (req, res) => {
     owners = (
       await req.app
         .get("client")
-        .guilds.cache.get(id)
+        .guilds.cache.get(SERVER_ID)
         .members.fetch({ user: owners })
     ).map((x) => x.user);
   } catch (e) {
@@ -126,8 +120,6 @@ route.get("/:id", async (req, res) => {
 
   let activity = "";
   if (botUser.presence?.activities?.length > 0) {
-    // console.log(`${Object.keys(botUser.presence.activities)} | ${Object.values(botUser.presence.activities)}`)
-    /* activity += `${botUser.presence?.activities[0].type.toLowerCase().capitalize()} ${botUser.presence?.activities[0].name}` */
     activity += botUser.presence.activities[0];
   }
 

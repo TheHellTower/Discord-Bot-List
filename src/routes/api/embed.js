@@ -2,10 +2,7 @@ const { Router } = require("express");
 const { Canvas, resolveImage } = require("canvas-constructor");
 const Bots = require("@models/bots");
 
-const {
-  web: { domainWithProtocol },
-  server: { id },
-} = require("@root/config.json");
+const { WEBSITE_DOMAINWITHPROTOCOL, SERVER_ID } = process.env;
 
 const noAvatar = require("@utils/noAvatar");
 
@@ -19,7 +16,7 @@ route.get("/:id", async (req, res) => {
   try {
     const owner = await req.app
       .get("client")
-      .guilds.cache.get(id)
+      .guilds.cache.get(SERVER_ID)
       .members.fetch(bot.owners.primary);
 
       var bots = [bot];
@@ -32,7 +29,7 @@ route.get("/:id", async (req, res) => {
     );
     const botUser = await req.app
       .get("client")
-      .guilds.cache.get(globalThis.config.server.id)
+      .guilds.cache.get(SERVER_ID)
       .members.fetch(req.params.id);
 
     const discordVerified = botUser.user.flags
@@ -68,7 +65,7 @@ route.get("/:id", async (req, res) => {
       .setTextFont("bold 12px sans-serif")
       .printText(owner.user.tag, 10, 245)
       .setTextAlign("right")
-      .printText(domainWithProtocol, 490, 245);
+      .printText(WEBSITE_DOMAINWITHPROTOCOL, 490, 245);
 
     res.writeHead(200, {
       "Content-Type": "image/png",

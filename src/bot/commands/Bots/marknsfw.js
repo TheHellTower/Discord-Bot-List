@@ -31,7 +31,7 @@ module.exports = class extends Command {
     if (
       !owners.includes(message.author.id) &&
       !message.member.roles.cache.has(
-        globalThis.config.server.roleIds.botVerifier
+        process.env.SERVER_ROLE_BOTVERIFIER
       )
     ) {
       return message.reply(

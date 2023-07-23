@@ -1,24 +1,12 @@
 const recaptcha2 = require("recaptcha2");
 const { isHTML } = require("@utils/isSomething");
 
-const {
-  server: { id },
-  botOptions: {
-    maxOwnersCount,
-    maxBotTags,
-    botTags,
-    maxSummaryLength,
-    minDescriptionLength,
-    maxDescriptionLength,
-  },
-  web: {
-    recaptchaV2: { siteKey, secretKey },
-  },
-} = require("@root/config.json");
+const { SERVER_ID, WEBSITE_MAXOWNERSCOUNT, WEBSITE_MAXBOTTAGS, WEBSITE_BOTTAGS, WEBSITE_MAXSUMMARYLENGTH, WEBSITE_MINDESCRIPTIONLENGTH, WEBSITE_MAXDESCRIPTIONLENGTH, WEBSITE_RECAPTCHA_PRIVATE } = process.env;
+const botTags = JSON.parse(WEBSITE_BOTTAGS);
 
 const recaptcha = new recaptcha2({
-  siteKey,
-  secretKey,
+  WEBSITE_RECAPTCHA_PUBLIC,
+  WEBSITE_RECAPTCHA_PRIVATE,
 });
 
 function isValidUrl(str) {
@@ -54,9 +42,9 @@ module.exports = async (req, b = null) => {
   }
 
   // Max length for summary and note
-  if (data.description.length > maxSummaryLength)
+  if (data.description.length > WEBSITE_MAXSUMMARYLENGTH)
     return { success: false, message: "Your summary is too long." };
-  if (String(data.note).length > maxSummaryLength)
+  if (String(data.note).length > WEBSITE_MAXSUMMARYLENGTH)
     return { success: false, message: "Your note is too long." };
 
   // Check if summary or note has HTML.
@@ -72,10 +60,10 @@ module.exports = async (req, b = null) => {
 
   // Check that the bot's HTML description isn't too long
   const stripped = data.long.replace("/<[^>]*>/g");
-  if (stripped.length < minDescriptionLength) {
+  if (stripped.length < WEBSITE_MINDESCRIPTIONLENGTH) {
     return { success: false, message: "Your HTML description is too short" };
   }
-  if (stripped.length > maxDescriptionLength) {
+  if (stripped.length > WEBSITE_MAXDESCRIPTIONLENGTH) {
     return { success: false, message: "Your HTML description is too long" };
   }
 
@@ -101,10 +89,10 @@ module.exports = async (req, b = null) => {
     if (!Array.isArray(data.tags)) {
       return { success: false, message: "Invalid bot tags" };
     }
-    if (data.tags.length > maxBotTags) {
+    if (data.tags.length > WEBSITE_MAXBOTTAGS) {
       return {
         success: false,
-        message: `Select up to ${maxBotTags} tags max`,
+        message: `Select up to ${WEBSITE_MAXBOTTAGS} tags max`,
       };
     }
     if (!data.tags.every((val) => botTags.includes(val))) {
@@ -114,7 +102,7 @@ module.exports = async (req, b = null) => {
 
   // Check the user is in the main server.
   try {
-    await req.app.get("client").guilds.cache.get(id).members.fetch(req.user.id);
+    await req.app.get("client").guilds.cache.get(SERVER_ID).members.fetch(req.user.id);
   } catch (e) {
     return {
       success: false,
@@ -190,7 +178,7 @@ module.exports = async (req, b = null) => {
         */
     users = await req.app
       .get("client")
-      .guilds.cache.get(id)
+      .guilds.cache.get(SERVER_ID)
       .members.fetch({ user: users });
     users = [
       ...new Set(
@@ -202,10 +190,10 @@ module.exports = async (req, b = null) => {
     ];
 
     // Check if additional owners exceed max
-    if (users.length > maxOwnersCount) {
+    if (users.length > WEBSITE_MAXOWNERSCOUNT) {
       return {
         success: false,
-        message: `You can only add up to ${maxOwnersCount} additional owners`,
+        message: `You can only add up to ${WEBSITE_MAXOWNERSCOUNT} additional owners`,
       };
     }
 
