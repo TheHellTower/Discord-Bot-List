@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/TheHellTower/Discord-Bot-List#readme",
   "devDependencies": {
-    "nodemon": "^2.0.21",
+    "nodemon": "^3.0.1",
     "prettier": "^3.0.0"
   },
   "dependencies": {
