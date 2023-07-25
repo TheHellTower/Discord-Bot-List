@@ -2,7 +2,12 @@ const Command = globalThis.TheHellTower.client.structures.command;
 const { EmbedBuilder } = require("discord.js");
 const Bots = require("@models/bots");
 
-const { SERVER_MODLOG, SERVER_ROLE_BOTDEVELOPER, SERVER_ROLE_BOT, SERVER_ROLE_VERIFIED } = process.env;
+const {
+  SERVER_MODLOG,
+  SERVER_ROLE_BOTDEVELOPER,
+  SERVER_ROLE_BOT,
+  SERVER_ROLE_VERIFIED,
+} = process.env;
 
 let modLog;
 
@@ -30,11 +35,7 @@ module.exports = class extends Command {
     const bot = await Bots.findOne({ botid: user.id }, { Id: false });
 
     let owners = [bot.owners.primary].concat(bot.owners.additional);
-    if (
-      !message.member.roles.cache.has(
-        process.env.SERVER_ROLE_BOTVERIFIER
-      )
-    )
+    if (!message.member.roles.cache.has(process.env.SERVER_ROLE_BOTVERIFIER))
       return message.reply("Only DBL admin(s) are allowed to verify bots.");
 
     this.init();

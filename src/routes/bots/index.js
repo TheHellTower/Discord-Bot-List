@@ -68,7 +68,8 @@ route.get("/:id", async (req, res) => {
   if (
     bot.state == "unverified" &&
     (!req.user ||
-      (!owners.includes(req.user?.id) && !SERVER_ADMINUSERS.includes(req.user?.id)))
+      (!owners.includes(req.user?.id) &&
+        !SERVER_ADMINUSERS.includes(req.user?.id)))
   ) {
     if (!req.user) return res.render("403", { req });
     const member = await req.app

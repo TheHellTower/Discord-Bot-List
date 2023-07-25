@@ -1,7 +1,16 @@
 const recaptcha2 = require("recaptcha2");
 const { isHTML } = require("@utils/isSomething");
 
-const { SERVER_ID, WEBSITE_MAXOWNERSCOUNT, WEBSITE_MAXBOTTAGS, WEBSITE_BOTTAGS, WEBSITE_MAXSUMMARYLENGTH, WEBSITE_MINDESCRIPTIONLENGTH, WEBSITE_MAXDESCRIPTIONLENGTH, WEBSITE_RECAPTCHA_PRIVATE } = process.env;
+const {
+  SERVER_ID,
+  WEBSITE_MAXOWNERSCOUNT,
+  WEBSITE_MAXBOTTAGS,
+  WEBSITE_BOTTAGS,
+  WEBSITE_MAXSUMMARYLENGTH,
+  WEBSITE_MINDESCRIPTIONLENGTH,
+  WEBSITE_MAXDESCRIPTIONLENGTH,
+  WEBSITE_RECAPTCHA_PRIVATE,
+} = process.env;
 const botTags = JSON.parse(WEBSITE_BOTTAGS);
 
 const recaptcha = new recaptcha2({
@@ -102,7 +111,10 @@ module.exports = async (req, b = null) => {
 
   // Check the user is in the main server.
   try {
-    await req.app.get("client").guilds.cache.get(SERVER_ID).members.fetch(req.user.id);
+    await req.app
+      .get("client")
+      .guilds.cache.get(SERVER_ID)
+      .members.fetch(req.user.id);
   } catch (e) {
     return {
       success: false,

@@ -19,10 +19,12 @@ route.get("/:id", async (req, res) => {
       .guilds.cache.get(SERVER_ID)
       .members.fetch(bot.owners.primary);
 
-      var bots = [bot];
-      await Promise.all(bots.map((bot) => noAvatar(req.app.get("client"), [bot])));
-      bot = bots[0];
-    
+    var bots = [bot];
+    await Promise.all(
+      bots.map((bot) => noAvatar(req.app.get("client"), [bot]))
+    );
+    bot = bots[0];
+
     const avatar = await resolveImage(bot.logo);
     const verified = await resolveImage(
       path.join(__dirname, "./verified_badge.png")
@@ -54,13 +56,7 @@ route.get("/:id", async (req, res) => {
         125
       );
     } else {
-      img.printText(
-        `Number of servers unknown | ${
-          bot.likes
-        } ❤️`,
-        30,
-        125
-      );
+      img.printText(`Number of servers unknown | ${bot.likes} ❤️`, 30, 125);
     }
     if (discordVerified) {
       img.printImage(verified, 420, 55);

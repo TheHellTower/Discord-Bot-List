@@ -47,7 +47,7 @@ module.exports = class extends Event {
 
   async buildHelp(message) {
     const commands = await this.FetchCommands(message);
-    
+
     const helpMessage = [];
     for (const [category, list] of commands) {
       helpMessage.push(

@@ -6,7 +6,8 @@ require("dotenv").config();
 const bot = require("@bot/index");
 const App = require("@structures/app.js");
 
-const { MONGO_URI, WEBSITE_PORT, BOT_TOKEN, WEBSITE_RECAPTCHA_PUBLIC } = process.env;
+const { MONGO_URI, WEBSITE_PORT, BOT_TOKEN, WEBSITE_RECAPTCHA_PUBLIC } =
+  process.env;
 const PORT = WEBSITE_PORT || 8080;
 
 globalThis.WEBSITE_RECAPTCHA_PUBLIC = WEBSITE_RECAPTCHA_PUBLIC;

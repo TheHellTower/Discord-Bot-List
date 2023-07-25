@@ -24,7 +24,7 @@ module.exports = class extends Command {
         : message.guild.members.cache.get(message.author.id);
     user = user?.user ? user.user : user;
     user = Object.assign({}, user, {
-      tag: user.tag.endsWith("#0") ? user.username : user.tag
+      tag: user.tag.endsWith("#0") ? user.username : user.tag,
     });
 
     const bots = await Bots.find(

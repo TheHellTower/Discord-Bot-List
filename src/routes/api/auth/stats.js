@@ -22,7 +22,8 @@ route.post("/:id", authApi, async (req, res) => {
   if (
     bot.servers.length > 0 &&
     bot.servers[bot.servers.length - 1] &&
-    Date.now() - bot.servers[bot.servers.length - 1].time < WEBSITE_RATELIMIT * 1000
+    Date.now() - bot.servers[bot.servers.length - 1].time <
+      WEBSITE_RATELIMIT * 1000
   )
     return res.json({ success: "false", error: "You are being ratelimited." });
 

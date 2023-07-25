@@ -43,9 +43,7 @@ module.exports = class extends Command {
     let owners = [bot.owners.primary].concat(bot.owners.additional);
     if (
       !owners.includes(message.author.id) &&
-      !message.member.roles.cache.has(
-        SERVER_ROLE_BOTVERIFIER
-      )
+      !message.member.roles.cache.has(SERVER_ROLE_BOTVERIFIER)
     ) {
       return message.reply(
         "Only DBL admin(s) or the respective bot owner(s) are allowed to remove this bot."

@@ -25,7 +25,7 @@ route.get("/", auth, async (req, res) => {
   });
 
   await Promise.all(bots.map((bot) => noAvatar(req.app.get("client"), [bot])));
- 
+
   res.render("user/me", {
     userProfile: user,
     cards: bots,

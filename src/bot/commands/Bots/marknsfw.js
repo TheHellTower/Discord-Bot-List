@@ -21,18 +21,16 @@ module.exports = class extends Command {
         : message.guild.members.cache.get(message.author.id);
     user = user?.user ? user.user : user;
     user = Object.assign({}, user, {
-      tag: user.tag.endsWith("#0") ? user.username : user.tag
+      tag: user.tag.endsWith("#0") ? user.username : user.tag,
     });
-    
+
     if (!user || !user.bot)
       return message.reply({ content: "Ping a **bot** to mark as nsfw." });
     const bot = await Bots.findOne({ botid: user.id });
     const owners = [bot.owners.primary].concat(bot.owners.additional);
     if (
       !owners.includes(message.author.id) &&
-      !message.member.roles.cache.has(
-        process.env.SERVER_ROLE_BOTVERIFIER
-      )
+      !message.member.roles.cache.has(process.env.SERVER_ROLE_BOTVERIFIER)
     ) {
       return message.reply(
         "Only DBL admin(s) or the respective bot owner(s) are allowed to update this bot."

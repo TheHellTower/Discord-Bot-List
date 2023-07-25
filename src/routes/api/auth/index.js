@@ -3,7 +3,7 @@ const { auth } = require("@utils/discordApi");
 const create = require("@utils/createAuth.js");
 const Bots = require("@models/bots");
 
-const { SERVER_ADMINUSERS } = process.env;;
+const { SERVER_ADMINUSERS } = process.env;
 
 const route = Router();
 

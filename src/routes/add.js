@@ -10,7 +10,7 @@ route.get("/", auth, async (req, res) => {
   res.render("add", {
     botTags,
     WEBSITE_MAXSUMMARYLENGTH,
-    req
+    req,
   });
 });
 

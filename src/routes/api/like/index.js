@@ -47,7 +47,6 @@ route.patch("/:id", auth, async (req, res) => {
       },
     };
     const req = https.request(bot.webhook, options, (res) => {
-
       res.on("data", (d) => {
         process.stdout.write(d);
       });

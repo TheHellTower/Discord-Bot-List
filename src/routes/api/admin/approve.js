@@ -5,7 +5,12 @@ const { EmbedBuilder } = require("discord.js");
 
 const route = Router();
 
-const { SERVER_ID, SERVER_ROLE_BOT, SERVER_ROLE_VERIFIED, SERVER_ROLE_BOTDEVELOPER } = process.env;
+const {
+  SERVER_ID,
+  SERVER_ROLE_BOT,
+  SERVER_ROLE_VERIFIED,
+  SERVER_ROLE_BOTDEVELOPER,
+} = process.env;
 
 route.post("/:id", auth, async (req, res) => {
   if (!req.user.staff)
