@@ -1,6 +1,7 @@
 const path = require("path");
 const { promisify } = require("util");
-const glob = promisify(require("glob"));
+const { glob } = require("glob");
+
 const Command = require("./Structures/Command.js");
 const Event = require("./Structures/Event.js");
 
@@ -22,24 +23,22 @@ module.exports = class Util {
   }
 
   async loadCommands() {
-    return glob(`${this.directory}bot/commands/**/*.js`).then((commands) => {
-      for (const commandFile of commands) {
-        delete require.cache[require.resolve(commandFile)];
-        const { name } = path.parse(commandFile);
-        const File = require(commandFile);
-        if (!this.isClass(File)) {
-          throw new TypeError(`Command ${name} doesn't export a class.`);
-        }
-        const command = new File(this.client, name.toLowerCase());
-        if (!(command instanceof Command)) {
-          throw new TypeError(`Command ${name} doesnt belong in Commands.`);
-        }
-        globalThis.TheHellTower.client.commands.set(command.name, command);
-        if (command.aliases.length) {
-          for (const alias of command.aliases) {
-            if (!globalThis.TheHellTower.client.aliases.has(alias)) {
-              globalThis.TheHellTower.client.aliases.set(alias, command.name);
-            }
+    return glob.sync(`${this.directory}bot/commands/**/*.js`).map(commandFile => {
+      delete require.cache[require.resolve(commandFile)];
+      const { name } = path.parse(commandFile);
+      const File = require(commandFile);
+      if (!this.isClass(File)) {
+        throw new TypeError(`Command ${name} doesn't export a class.`);
+      }
+      const command = new File(this.client, name.toLowerCase());
+      if (!(command instanceof Command)) {
+        throw new TypeError(`Command ${name} doesnt belong in Commands.`);
+      }
+      globalThis.TheHellTower.client.commands.set(command.name, command);
+      if (command.aliases.length) {
+        for (const alias of command.aliases) {
+          if (!globalThis.TheHellTower.client.aliases.has(alias)) {
+            globalThis.TheHellTower.client.aliases.set(alias, command.name);
           }
         }
       }
@@ -47,9 +46,8 @@ module.exports = class Util {
   }
 
   async loadEvents() {
-    return glob(`${this.directory}bot/events/**/*.js`).then((events) => {
-      for (const eventFile of events) {
-        delete require.cache[require.resolve(eventFile)];
+    return glob.sync(`${this.directory}bot/events/**/*.js`).map(eventFile => {
+      delete require.cache[require.resolve(eventFile)];
         const { name } = path.parse(eventFile);
         const File = require(eventFile);
         if (!this.isClass(File)) {
@@ -65,7 +63,6 @@ module.exports = class Util {
         } catch {
           //
         }
-      }
     });
   }
 };
