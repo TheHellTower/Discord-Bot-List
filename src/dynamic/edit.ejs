@@ -24,17 +24,17 @@
         <div id="edit" class="section">
           <form class="center">
             <div class="input-holder">
-              <input id="botid" class="input" type='text' placeholder=' ' value=<%= bot.botid %> readonly=''>
+              <input id="botid" class="input" type='text' placeholder=' ' value="<%= bot.botid %>" readonly=''>
               <div class="placeholder">Client ID</div>
             </div>
             <br>
             <div class="input-holder">
-              <input id="prefix" class="input" type='text' placeholder=' ' value=<%= bot.prefix %>>
+              <input id="prefix" class="input" type='text' placeholder=' ' value="<%= bot.prefix %>">
               <div class="placeholder">Prefix</div>
             </div>
             <br>
             <div class="input-holder">
-              <input id="description" class="input" maxlength=<%= WEBSITE_MAXSUMMARYLENGTH %> type='text' placeholder=' ' value=<%= bot.description %>>
+              <input id="description" class="input" maxlength=<%= WEBSITE_MAXSUMMARYLENGTH %> type='text' placeholder=' ' value="<%= bot.description %>">
               <div class="placeholder">Summary</div>
             </div>
             <br>
@@ -56,9 +56,9 @@
             <br>
             <div class="input-holder">
               <% if (bot.owners.primary == req.user.id) { %>
-                <input id="owner-ids" class="input xinput" type='text' placeholder=' ' value=<%= bot.owners.additional.join(" ") %>>
+                <input id="owner-ids" class="input xinput" type='text' placeholder=' ' value="<%= bot.owners.additional.join(" ") %>">
               <% } else { %>
-                <input id="owner-ids" class="input xinput" type='text' placeholder=' ' value=<%= bot.owners.additional.join(" ") %> disabled>
+                <input id="owner-ids" class="input xinput" type='text' placeholder=' ' value="<%= bot.owners.additional.join(" ") %>" disabled>
               <% } %>
               <div class="placeholder">Only the primary owner can edit additional owners</div>
             </div>
